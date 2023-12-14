@@ -80,6 +80,7 @@ function CategoryList({ data }) {
   };
 
   const deleteCategories = async () => {
+    ("use server");
     const checkedIdsArray = checkedArray.map((item, index) => ({
       _id: item.value,
     }));
