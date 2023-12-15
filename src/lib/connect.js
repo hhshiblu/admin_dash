@@ -1,19 +1,16 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, Db } from "mongodb";
 
+let db;
+/**
+ * @returns {Promise<Db>} - Returns a promise that resolves to the database
+ */
 const connectToDB = async () => {
-  const client = await MongoClient.connect(process.env.DATABASE_URL);
-  return client.db("ecom-Shop");
+  if (!db) {
+    const client = await MongoClient.connect(process.env.DATABASE_URL);
+    db = client.db("ecom-Shop");
+  }
+
+  return db;
 };
 
 export default connectToDB;
-// import mongoose from "mongoose";
-
-// async function connectDB() {
-//   try {
-//     await mongoose.connect(process.env.DATABASE_URL);
-//   } catch (error) {
-//     console.error("Error connecting to MongoDB:", error);
-//   }
-// }
-
-// export default connectDB;
