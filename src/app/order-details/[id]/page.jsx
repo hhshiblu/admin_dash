@@ -1,9 +1,7 @@
 import SingleOrder from "@/components/orders/singleOrder";
-import { getOrder } from "@/serverAction/order/order";
 import { Suspense } from "react";
 
-async function page({ params }) {
-  await getOrder(params.id);
+function page({ params }) {
   return (
     <div>
       <Suspense fallback={<p>loading..</p>}>

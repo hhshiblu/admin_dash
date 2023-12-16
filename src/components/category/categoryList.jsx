@@ -15,8 +15,12 @@ import {
   IoIosCloudUpload,
 } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
+import { useFormStatus } from "react-dom";
+import AddCategory from "./addCategory";
 function CategoryList({ data }) {
+  const { pending } = useFormStatus();
   const router = useRouter();
+  const [confirm, setConfirm] = useState(false);
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
   const [checkedArray, setCheckedArray] = useState([]);
@@ -79,18 +83,20 @@ function CategoryList({ data }) {
     setDeleteCategoryModal(true);
   };
 
-  const deleteCategories = async () => {
-    const checkedIdsArray = checkedArray.map((item, index) => ({
+  const deleteCategories = deleteCate.bind(
+    null,
+    checkedArray.map((item) => ({
       _id: item.value,
-    }));
-
-    if (checkedIdsArray.length > 0) {
-      await deleteCate(checkedIdsArray).then(() => {
-        setDeleteCategoryModal(false);
-      });
+    }))
+  );
+  const handleDelete = async () => {
+    try {
+      await deleteCategories();
+      setDeleteCategoryModal(false);
+    } catch (error) {
+      console.error("Error deleting categories:", error);
     }
   };
-
   const updateCategory = () => {
     updateCheckedAndExpandedCategories();
     setUpdateCategoryModal(true);
@@ -136,6 +142,9 @@ function CategoryList({ data }) {
           }}
         />
       </div>
+      <div>
+        {confirm && <AddCategory data={data} setConfirm={setConfirm} />}
+      </div>
 
       <div>
         {deleteCategoryModal && (
@@ -170,9 +179,91 @@ function CategoryList({ data }) {
               ))}
 
               <div className="flex gap-2  justify-center mt-3">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleDelete();
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="bg-[#cf3232] text-white px-3 rounded-md text-center"
+                  >
+                    Yes
+                  </button>
+                </form>
+
+                <button
+                  className=" bg-green-700 text-white px-3 rounded-md"
+                  onClick={() => {
+                    setDeleteCategoryModal(false);
+                    setCheckedArray([]);
+                    setExpandedArray([]);
+                  }}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div>
+        {updateCategoryModal && (
+          <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
+            <div className="w-[90%] 800px:w-[60%] min-h-[20vh] bg-white rounded shadow p-5">
+              <div className="w-full flex justify-end cursor-pointer">
+                <RxCross1
+                  size={25}
+                  onClick={() => setUpdateCategoryModal(false)}
+                />
+              </div>
+              <h3 className="text-[20px] text-center py-5 font-Poppins text-[#000000cb]">
+                UpdateCategories
+              </h3>
+
+              <h5 className="font-semibold pb-2">Expanded category : </h5>
+              {expandedArray.length > 0 &&
+                expandedArray.map((item, index) => (
+                  <div key={index}>
+                    <input
+                      type="text"
+                      value={item.name}
+                      className="w-full border "
+                    />
+
+                    <select className="form-control" value={item.parentId}>
+                      <option>select category</option>
+                      {data.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+              <h5 className="font-semibold ">Checked for delete : </h5>
+              {checkedArray.length > 0 &&
+                checkedArray.map((item, index) => (
+                  <div key={index}>
+                    <input value={item.name} placeholder={`Category Name`} />
+
+                    <select className="form-control" value={item.parentId}>
+                      <option>select category</option>
+                      {data.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+
+              <div className="flex gap-2  justify-center mt-3">
                 <button
                   className=" bg-[#cf3232] text-white px-3 rounded-md text-center "
-                  onClick={deleteCategories}
+                  // onClick={updateCategoriesForm}
                 >
                   yes
                 </button>

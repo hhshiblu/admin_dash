@@ -2,6 +2,7 @@
 
 import { ObjectId } from "mongodb";
 import connectToDB from "@/lib/connect";
+import { revalidatePath } from "next/cache";
 export const getOrders = async () => {
   try {
     const db = await connectToDB();
@@ -36,15 +37,7 @@ export const getOrder = async (id) => {
     const collection = db.collection("adminorder");
 
     const singleOrder = await collection.findOne({ orderId: new ObjectId(id) });
-    const order = {
-      id: singleOrder._id.toString(),
-      orderId: singleOrder.orderId.toString(),
-      orderArray: singleOrder.orderArray,
-      totalPrice: singleOrder.totalPrice,
-      delivery_status: singleOrder.delivery_status,
-      shippingInfo: singleOrder.shippingInfo,
-      createAt: singleOrder.createAt,
-    };
+    const order = JSON.parse(JSON.stringify(singleOrder));
     return order;
   } catch (error) {
     return error.message;
@@ -152,4 +145,11 @@ export const createOrder = async (data) => {
     createAt: new Date(),
   });
   await SellerOrder.insertMany(orderArray);
+};
+
+export const upDate = async (id) => {
+  const db = await connectToDB();
+  const collection = db.collection("adminorder");
+  await collection.findOneAndDelete({ orderId: new ObjectId(id) });
+  revalidatePath("/order-details");
 };

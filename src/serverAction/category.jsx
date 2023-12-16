@@ -2,6 +2,8 @@
 import connectToDB from "@/lib/connect";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import shortid from "shortid";
+import slugify from "slugify";
 
 // Your code here
 
@@ -63,5 +65,31 @@ export const deleteCate = async (ids) => {
         stack: error.stack,
       },
     };
+  }
+};
+
+export const addCategory = async (FormData) => {
+  try {
+    const db = await connectToDB();
+    const collection = db.collection("categories");
+
+    const name = FormData.get("name");
+    const parentId = FormData.get("parentId");
+    // console.log(name, parentId);
+    const categoryObj = {
+      name: name,
+      slug: `${slugify(name)}-${shortid.generate()}`,
+    };
+    if (parentId !== "select category") {
+      categoryObj.parentId = parentId;
+    } else {
+      categoryObj.parentId = null;
+    }
+    const cate = await collection.insertOne(categoryObj);
+    if (cate.acknowledged == true) {
+      revalidatePath("/admin-dashboard/category");
+    }
+  } catch (error) {
+    return error.message;
   }
 };
