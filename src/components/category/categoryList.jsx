@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteCate } from "@/serverAction/category";
+import { Updatecate, deleteCate } from "@/serverAction/category";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import CheckboxTree from "react-checkbox-tree";
@@ -100,6 +100,38 @@ function CategoryList({ data }) {
   const updateCategory = () => {
     updateCheckedAndExpandedCategories();
     setUpdateCategoryModal(true);
+  };
+
+  const handleCategoryInput = (key, value, index, type) => {
+    if (type === "checked") {
+      const updatedCheckedArray = checkedArray.map((item, _index) =>
+        index === _index ? { ...item, [key]: value } : item
+      );
+      setCheckedArray(updatedCheckedArray);
+    } else if (type === "expanded") {
+      const updatedExpandedArray = expandedArray.map((item, _index) =>
+        index === _index ? { ...item, [key]: value } : item
+      );
+      setExpandedArray(updatedExpandedArray);
+    }
+  };
+  const updateCategoriesForm = async () => {
+    const form = new FormData();
+    let _id, name;
+
+    expandedArray.forEach((item, index) => {
+      ({ value: _id, name } = item);
+      form.append("_id", _id);
+      form.append("name", name);
+    });
+
+    checkedArray.forEach((item, index) => {
+      ({ value: _id, name } = item);
+      form.append("_id", _id);
+      form.append("name", name);
+    });
+
+    await Updatecate({ _id, name }).then(() => setUpdateCategoryModal(false));
   };
   return (
     <>
@@ -228,12 +260,30 @@ function CategoryList({ data }) {
                 expandedArray.map((item, index) => (
                   <div key={index}>
                     <input
-                      type="text"
                       value={item.name}
-                      className="w-full border "
+                      placeholder={`Category Name`}
+                      onChange={(e) =>
+                        handleCategoryInput(
+                          "name",
+                          e.target.value,
+                          index,
+                          "expanded"
+                        )
+                      }
                     />
 
-                    <select className="form-control" value={item.parentId}>
+                    <select
+                      className="form-control"
+                      value={item.parentId}
+                      onChange={(e) =>
+                        handleCategoryInput(
+                          "parentId",
+                          e.target.value,
+                          index,
+                          "expanded"
+                        )
+                      }
+                    >
                       <option>select category</option>
                       {data.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -247,9 +297,31 @@ function CategoryList({ data }) {
               {checkedArray.length > 0 &&
                 checkedArray.map((item, index) => (
                   <div key={index}>
-                    <input value={item.name} placeholder={`Category Name`} />
+                    <input
+                      value={item.name}
+                      placeholder={`Category Name`}
+                      onChange={(e) =>
+                        handleCategoryInput(
+                          "name",
+                          e.target.value,
+                          index,
+                          "checked"
+                        )
+                      }
+                    />
 
-                    <select className="form-control" value={item.parentId}>
+                    <select
+                      className="form-control"
+                      value={item.parentId}
+                      onChange={(e) =>
+                        handleCategoryInput(
+                          "parentId",
+                          e.target.value,
+                          index,
+                          "checked"
+                        )
+                      }
+                    >
                       <option>select category</option>
                       {data.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -263,7 +335,7 @@ function CategoryList({ data }) {
               <div className="flex gap-2  justify-center mt-3">
                 <button
                   className=" bg-[#cf3232] text-white px-3 rounded-md text-center "
-                  // onClick={updateCategoriesForm}
+                  onClick={updateCategoriesForm}
                 >
                   yes
                 </button>

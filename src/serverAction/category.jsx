@@ -93,3 +93,18 @@ export const addCategory = async (FormData) => {
     return error.message;
   }
 };
+
+export const Updatecate = async ({ _id, name }) => {
+  const db = await connectToDB();
+  const collection = db.collection("categories");
+  try {
+    await collection.findOneAndUpdate(
+      { _id: new ObjectId(_id) },
+      { $set: { name } }
+    );
+
+    revalidatePath("/admin-dashboard/categories");
+  } catch (error) {
+    return error.message;
+  }
+};

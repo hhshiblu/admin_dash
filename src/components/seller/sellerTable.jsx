@@ -40,6 +40,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { UpdateSellerStatus, deleteSelleraction } from "@/serverAction/seller";
 
 const hello = (id) => {
   //  <Helo/>
@@ -90,9 +91,9 @@ export const columns = [
   },
 
   {
-    accessorKey: "id",
-    header: () => <div>OrderId</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("id")}</div>,
+    accessorKey: "_id",
+    header: () => <div>SellerId</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("_id")}</div>,
   },
   {
     accessorKey: "name",
@@ -114,44 +115,51 @@ export const columns = [
     ),
   },
   {
-    accessorKey: "discountPrice",
+    accessorKey: "email",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Price
+          Email
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("discountPrice")}</div>
+      <div className="capitalize">{row.getValue("email")}</div>
     ),
   },
   {
-    accessorKey: "stock",
+    accessorKey: "phoneNumber",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Stock
+          phoneNumber
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("stock")}</div>
+      <div className="capitalize">{row.getValue("phoneNumber")}</div>
     ),
   },
   {
-    accessorKey: "sold_out",
-    header: () => <div>Sold_out</div>,
+    accessorKey: "availableBalance",
+    header: () => <div>Balance</div>,
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("sold_out")}</div>
+      <div className="capitalize">{row.getValue("availableBalance")}</div>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: () => <div>Status</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("status")}</div>
     ),
   },
   {
@@ -177,8 +185,14 @@ export const columns = [
     header: () => <div>Action</div>,
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const seller = row.original;
+      const deleteSeller = deleteSelleraction.bind(null, seller._id);
 
+      const updateStatus = async (status) => {
+        await UpdateSellerStatus(seller._id, status).then(() =>
+          window.location.reload()
+        );
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -190,16 +204,50 @@ export const columns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(seller._id)}
             >
-              Copy payment ID
+              Copy seller ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href="/helo">home</Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+
+                    <h2 className="w-1 h-4">Update Status</h2>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Status</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        updateStatus("Active");
+                      }}
+                    >
+                      <button type="submit">Active</button>
+                    </form>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        updateStatus("Pending");
+                      }}
+                    >
+                      <button type="submit">Pending</button>
+                    </form>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={`/product-details/${payment.id}`}>details</Link>
+              <form action={deleteSeller}>
+                <button type="submit">Delete seller</button>
+              </form>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -208,7 +256,7 @@ export const columns = [
   },
 ];
 
-export function DataProductTable({ data }) {
+export function SellerTable({ data }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -238,9 +286,9 @@ export function DataProductTable({ data }) {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter by id..."
-          value={table.getColumn("id")?.getFilterValue() ?? ""}
+          value={table.getColumn("_id")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("id")?.setFilterValue(event.target.value)
+            table.getColumn("_id")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

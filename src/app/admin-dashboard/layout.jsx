@@ -23,6 +23,18 @@ const mainMenu = [
     link: "/admin-dashboard/banar",
   },
   {
+    id: 90,
+    icon: "zp zp-info",
+    label: "User",
+    link: "/admin-dashboard/all_users",
+  },
+  {
+    id: 90,
+    icon: "zp zp-info",
+    label: "Seller",
+    link: "/admin-dashboard/all_sellers",
+  },
+  {
     id: 3,
     icon: "zp zp-credit-card",
     label: "Order",

@@ -1,5 +1,6 @@
 import { createOrder, getOrders } from "@/serverAction/order/order";
 import { DataTableDemo } from "../demo";
+import { getSellers } from "@/serverAction/seller";
 const data = {
   cart: [
     {
