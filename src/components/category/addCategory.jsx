@@ -1,9 +1,8 @@
 import { RxCross1 } from "react-icons/rx";
-import { useFormStatus } from "react-dom";
-import { addCategory } from "@/serverAction/category";
-function AddCategory({ data, setConfirm }) {
-  const { pending } = useFormStatus();
 
+import { addCategory } from "@/serverAction/category";
+import SubmitButton from "./submitButton";
+function AddCategory({ data, setConfirm }) {
   return (
     <div>
       <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
@@ -55,17 +54,7 @@ function AddCategory({ data, setConfirm }) {
             <br />
 
             <div>
-              <button
-                type="submit"
-                aria-disabled={pending}
-                className={`group relative mt-4 w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white shadow-sm ${
-                  pending
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-800"
-                }`}
-              >
-                {pending ? "Submitting..." : "Submit"}
-              </button>
+              <SubmitButton />
             </div>
           </form>
         </div>
