@@ -1,7 +1,7 @@
 "use server";
 import connectToDB from "@/lib/connect";
 import { ObjectId } from "mongodb";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import shortid from "shortid";
 import slugify from "slugify";
 import { cache } from "react";
@@ -29,7 +29,7 @@ function createCategories(categories, parentId = null) {
   return categoryList;
 }
 
-export const getCategories = cache(async () => {
+export const getCategories = async () => {
   try {
     const db = await connectToDB();
     const collection = db.collection("categories");
@@ -37,11 +37,13 @@ export const getCategories = cache(async () => {
     const category = await collection.find({}).toArray();
 
     const categoryList = createCategories(category);
+    revalidateTag("collection");
+
     return categoryList;
   } catch (err) {
     return err.message;
   }
-});
+};
 
 export const deleteCate = async (ids) => {
   try {
