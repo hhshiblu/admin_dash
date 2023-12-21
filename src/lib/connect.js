@@ -1,4 +1,4 @@
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, ServerApiVersion } from "mongodb";
 
 let db;
 /**
@@ -6,7 +6,13 @@ let db;
  */
 const connectToDB = async () => {
   if (!db) {
-    const client = await MongoClient.connect(process.env.DATABASE_URL);
+    const client = new MongoClient(process.env.DATABASE_URL, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
+    });
     db = client.db("ecom-Shop");
   }
 
