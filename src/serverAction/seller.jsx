@@ -3,13 +3,15 @@
 import { ObjectId } from "mongodb";
 import connectToDB from "@/lib/connect";
 import { revalidatePath } from "next/cache";
+import prisma from "../../prisma/prisma";
+import { NextResponse } from "next/server";
 
 export const getSellers = async () => {
   try {
-    const db = await connectToDB();
-    const collection = db.collection("shops");
+    // const db = await connectToDB();
+    // const collection = db.collection("shops");
 
-    const seller = await collection.find({}).toArray();
+    const seller = await prisma.shops.findMany();
 
     const sellers = JSON.parse(JSON.stringify(seller));
     return sellers;

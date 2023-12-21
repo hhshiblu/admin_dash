@@ -33,7 +33,7 @@ function CategoryList({ data }) {
         label: category.name,
         value: category._id,
         children:
-          category.children.length > 0 && renderCategories(category.children),
+          category?.children?.length > 0 && renderCategories(category.children),
       });
     }
     return myCategories;

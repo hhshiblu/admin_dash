@@ -1,4 +1,3 @@
-import Category from "@/components/category/category";
 import CategoryList from "@/components/category/categoryList";
 import connectToDB from "@/lib/connect";
 import { createCategories } from "@/serverAction/category";

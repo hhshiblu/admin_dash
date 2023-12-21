@@ -5,11 +5,7 @@ import { getSellers } from "@/serverAction/seller";
 async function SellerData() {
   const sellers = await getSellers();
 
-  return (
-    <div>
-      <SellerTable data={sellers} />
-    </div>
-  );
+  return <div></div>;
 }
 
 export default SellerData;
