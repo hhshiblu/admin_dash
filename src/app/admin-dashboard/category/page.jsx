@@ -1,22 +1,26 @@
 import Category from "@/components/category/category";
+import CategoryList from "@/components/category/categoryList";
+import connectToDB from "@/lib/connect";
+import { createCategories } from "@/serverAction/category";
 import { Suspense } from "react";
 
-async function page() {
-  return (
-    <div>
-      <div className="flex justify-between w-full px-6 py-3 ">
-        <h3 className="text-[21px]  font-semibold text-slate-600">Category</h3>
-      </div>
+const getCategories = async () => {
+  try {
+    const db = await connectToDB();
+    const collection = db.collection("categories");
 
-      <hr />
-      <hr />
-      <div>
-        <Suspense fallback={<p>loading...</p>}>
-          <Category />
-        </Suspense>
-      </div>
-    </div>
-  );
+    const category = await collection.find({}).toArray();
+
+    const categoryList = createCategories(category);
+
+    return categoryList;
+  } catch (err) {
+    return err.message;
+  }
+};
+async function page() {
+  const category = await getCategories();
+  return <CategoryList data={category} />;
 }
 
 export default page;

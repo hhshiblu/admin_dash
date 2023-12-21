@@ -20,11 +20,7 @@ const getCategories = async () => {
 
 async function Category() {
   const category = await getCategories();
-  return (
-    <div>
-      <CategoryList data={category} />
-    </div>
-  );
+  return <div></div>;
 }
 
 export default Category;

@@ -3,6 +3,7 @@
 import { ObjectId } from "mongodb";
 import connectToDB from "@/lib/connect";
 import { revalidatePath } from "next/cache";
+
 export const getUsers = async () => {
   try {
     const db = await connectToDB();
