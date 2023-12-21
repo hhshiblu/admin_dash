@@ -90,11 +90,11 @@ export const columns = [
     enableHiding: false,
   },
 
-  {
-    accessorKey: "_id",
-    header: () => <div>SellerId</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("_id")}</div>,
-  },
+  // {
+  //   accessorKey: "_id",
+  //   header: () => <div>SellerId</div>,
+  //   cell: ({ row }) => <div className="lowercase">{row.getValue("_id")}</div>,
+  // },
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -189,9 +189,7 @@ export const columns = [
       const deleteSeller = deleteSelleraction.bind(null, seller._id);
 
       const updateStatus = async (status) => {
-        await UpdateSellerStatus(seller._id, status).then(() =>
-          window.location.reload()
-        );
+        await UpdateSellerStatus(seller._id, status);
       };
       return (
         <DropdownMenu>
@@ -227,6 +225,7 @@ export const columns = [
                         e.preventDefault();
                         updateStatus("Active");
                       }}
+                      // action={}
                     >
                       <button type="submit">Active</button>
                     </form>

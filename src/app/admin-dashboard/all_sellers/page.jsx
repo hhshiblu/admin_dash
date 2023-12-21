@@ -9,6 +9,7 @@ const getSellers = async () => {
     const seller = await collection.find({}).toArray();
 
     const sellers = JSON.parse(JSON.stringify(seller));
+
     return sellers;
   } catch (error) {
     return error.message;
@@ -17,6 +18,7 @@ const getSellers = async () => {
 
 async function page() {
   const sellers = await getSellers();
+  console.log(sellers);
   return <SellerTable data={sellers} />;
 }
 

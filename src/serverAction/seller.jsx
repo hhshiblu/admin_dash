@@ -29,7 +29,7 @@ export const UpdateSellerStatus = async (id, status) => {
 
     if (result) {
       revalidatePath("/admin-dashboard/all_sellers");
-      return (message = "User deleted successfully");
+      return { message: "success" };
     }
   } catch (error) {
     return error.message;
