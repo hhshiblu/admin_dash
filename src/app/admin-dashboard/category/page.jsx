@@ -1,7 +1,6 @@
 import CategoryList from "@/components/category/categoryList";
 import connectToDB from "@/lib/connect";
 import { createCategories } from "@/serverAction/category";
-import { Suspense } from "react";
 
 const getCategories = async () => {
   try {
@@ -19,7 +18,9 @@ const getCategories = async () => {
 };
 async function page() {
   const category = await getCategories();
-  return <CategoryList data={category} />;
+  console.log({ category });
+  return;
+  // return <CategoryList data={category} />;
 }
 
 export default page;
