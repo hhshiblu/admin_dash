@@ -18,8 +18,6 @@ import { RxCross1 } from "react-icons/rx";
 import { useFormStatus } from "react-dom";
 import AddCategory from "./addCategory";
 function CategoryList({ data }) {
-  const { pending } = useFormStatus();
-  const router = useRouter();
   const [confirm, setConfirm] = useState(false);
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
