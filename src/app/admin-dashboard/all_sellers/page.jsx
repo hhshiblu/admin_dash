@@ -1,9 +1,6 @@
-import Orders from "@/components/orders/orders";
-import SellerData from "@/components/seller/sellerData";
 import { SellerTable } from "@/components/seller/sellerTable";
 import connectToDB from "@/lib/connect";
-// import { getSellers } from "@/serverAction/seller";
-import React, { Suspense } from "react";
+
 const getSellers = async () => {
   try {
     const db = await connectToDB();
@@ -17,6 +14,7 @@ const getSellers = async () => {
     return error.message;
   }
 };
+
 async function page() {
   const sellers = await getSellers();
   return <SellerTable data={sellers} />;

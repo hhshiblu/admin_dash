@@ -186,10 +186,10 @@ export const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const seller = row.original;
-      const deleteSeller = deleteSelleraction.bind(null, seller.id);
+      const deleteSeller = deleteSelleraction.bind(null, seller._id);
 
       const updateStatus = async (status) => {
-        await UpdateSellerStatus(seller.id, status).then(() =>
+        await UpdateSellerStatus(seller._id, status).then(() =>
           window.location.reload()
         );
       };
