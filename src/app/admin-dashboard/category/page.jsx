@@ -2,13 +2,14 @@ import CategoryList from "@/components/category/categoryList";
 import connectToDB from "@/lib/connect";
 import { createCategories } from "@/serverAction/category";
 import { Suspense } from "react";
+import prisma from "../../../../prisma/prisma";
 
 const getCategories = async () => {
   try {
-    const db = await connectToDB();
-    const collection = db.collection("categories");
+    // const db = await connectToDB();
+    // const collection = db.collection("categories");
 
-    const category = await collection.find({}).toArray();
+    const category = await prisma.categories.findMany();
 
     const categoryList = createCategories(category);
 

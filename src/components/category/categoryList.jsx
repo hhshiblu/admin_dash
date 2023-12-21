@@ -31,7 +31,7 @@ function CategoryList({ data }) {
     for (let category of categories) {
       myCategories.push({
         label: category.name,
-        value: category._id,
+        value: category.id,
         children:
           category?.children?.length > 0 && renderCategories(category.children),
       });
