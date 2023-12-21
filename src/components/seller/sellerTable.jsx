@@ -6,6 +6,7 @@ import {
   ChevronDownIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
+import { useFormState } from "react-dom";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -191,6 +192,7 @@ export const columns = [
       const updateStatus = async (status) => {
         await UpdateSellerStatus(seller._id, status);
       };
+      const [state, action] = useFormState(UpdateSellerStatus, null);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -221,11 +223,9 @@ export const columns = [
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        updateStatus("Active");
+                      action={async (formaData) => {
+                        await action("Active");
                       }}
-                      // action={}
                     >
                       <button type="submit">Active</button>
                     </form>

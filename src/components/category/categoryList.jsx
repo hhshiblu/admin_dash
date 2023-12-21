@@ -15,7 +15,7 @@ import {
   IoIosCloudUpload,
 } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
-import { useFormStatus } from "react-dom";
+
 import AddCategory from "./addCategory";
 function CategoryList({ data }) {
   const [confirm, setConfirm] = useState(false);
@@ -157,7 +157,7 @@ function CategoryList({ data }) {
         </div>
       </div>
       <div className="w-full pl-14 pt-2">
-        <CheckboxTree
+        {/* <CheckboxTree
           nodes={renderCategories(data)}
           checked={checked}
           expanded={expanded}
@@ -170,7 +170,12 @@ function CategoryList({ data }) {
             expandClose: <IoIosArrowForward />,
             expandOpen: <IoIosArrowDown />,
           }}
-        />
+        /> */}
+        {data.map((item, i) => (
+          <div className="flex flex-col gap-4" key={i}>
+            {item.name}
+          </div>
+        ))}
       </div>
       <div>
         {confirm && <AddCategory data={data} setConfirm={setConfirm} />}

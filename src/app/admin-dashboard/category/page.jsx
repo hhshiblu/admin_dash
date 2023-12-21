@@ -9,9 +9,9 @@ const getCategories = async () => {
 
     const category = await collection.find({}).toArray();
 
-    const categoryList = createCategories(category);
+    // const categoryList = createCategories(category);
 
-    return categoryList;
+    return category;
   } catch (err) {
     return err.message;
   }
@@ -19,8 +19,8 @@ const getCategories = async () => {
 async function page() {
   const category = await getCategories();
   console.log({ category });
-  return;
-  // return <CategoryList data={category} />;
+
+  return <CategoryList data={category} />;
 }
 
 export default page;

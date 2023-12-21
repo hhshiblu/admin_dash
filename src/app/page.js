@@ -91,7 +91,7 @@ const data = [
 export default function Home() {
   return (
     <main>
-      {/* <DataTableDemo data={data} /> */}
+      <DataTableDemo data={data} />
       <div>
         <div className="h-[8vh] bg-[#05595B] w-full ">
           <div className="flex justify-between items-center h-full my-auto mx-10">
