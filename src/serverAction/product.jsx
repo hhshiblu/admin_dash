@@ -1,4 +1,5 @@
 "use server";
+import { cloudinaryUpload, uploadImagesToCloudinary } from "@/lib/cloudinary";
 import connectToDB from "@/lib/connect";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
@@ -68,5 +69,19 @@ export const deleteProductAction = async (id) => {
 };
 
 export const handelProducts = async (formData) => {
-  console.log(formData.getAll("images"));
+  const images = formData.getAll("images");
+  const imageUrls = await uploadImagesToCloudinary(images, "hhh");
+  console.log(imageUrls);
+  const name = formData.get("name");
+  const description = formData.get("description");
+  const category = formData.get("category");
+  const tags = formData.get("tags");
+  const subCategory = formData.get("subCategory");
+  const originalPrice = parseInt(formData.get("originalPrice"));
+  const discountPrice = parseInt(formData.get("discountPrice"));
+  const stock = parseInt(formData.get("stock"));
+  const color = formData.getAll("color[]"); // Parse colors as an array
+  const size = formData.getAll("size[]");
+  const sellerId = formData.get("sellerId");
+  // console.log(name, discountPrice);
 };

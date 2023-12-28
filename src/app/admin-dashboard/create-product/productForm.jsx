@@ -1,36 +1,11 @@
-// import { getCategories } from "@/serverAction/category";
-// import Image from "next/image";
-// import ProductForm from "./productForm";
-// export const dynamic = "force-dynamic";
-// async function CreateProduct() {
-//   const categories = await getCategories();
-
-//   return (
-//     <div className="w-[100%] 800px:w-[84%] bg-white  m-auto shadow h-[91vh] rounded-[4px] p-4 overflow-y-scroll">
-//       <h5 className="text-[22px] font-Poppins text-center py-2">
-//         Create Product
-//       </h5>
-//       <hr />
-//       <hr />
-//       <ProductForm categories={categories} />
-//     </div>
-//   );
-// }
-
-// export default CreateProduct;
-
 "use client";
-import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 import { handelProducts } from "@/serverAction/product";
-// import { toast } from "react-toastify";
-import Image from "next/image";
-
+import React, { useRef, useState } from "react";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 const colorsData = ["Red", "White", "Green", "blue", "yellow"];
 const sizesData = ["22", "23", "29", "42", "s", "m", "l", "xl", "xxl"];
-
-function CreateProduct() {
-  const categories = [];
+function ProductForm({ categories }) {
+  const ref = useRef(null);
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [selectedColors, setSelectedColors] = useState([]);
@@ -77,8 +52,7 @@ function CreateProduct() {
     setProduct({ ...product, [name]: value });
   };
 
-  const HandelSubmit = (e) => {
-    e.preventDefault();
+  const HandelSubmit = async () => {
     const sellerId = "6461e1231d468f007eb5d6d9";
     const newForm = new FormData();
 
@@ -95,7 +69,6 @@ function CreateProduct() {
     newForm.append("discountPrice", product.discountPrice);
     newForm.append("stock", product.stock);
 
-    // Add selected colors and sizes to the form data
     selectedColors.forEach((color) => {
       newForm.append("color[]", color);
     });
@@ -104,16 +77,13 @@ function CreateProduct() {
       newForm.append("size[]", size);
     });
 
-    // Pass the seller ID as a single value
     newForm.append("sellerId", sellerId);
-    handelProducts(newForm);
+    await handelProducts(newForm);
   };
-
   return (
-    <div className="w-[100%] 800px:w-[84%] bg-white  m-auto shadow h-[91vh] rounded-[4px] p-4 overflow-y-scroll">
-      <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
-      {/* create product form */}
-      <form onSubmit={HandelSubmit}>
+    <div>
+      {" "}
+      <form action={HandelSubmit} ref={ref}>
         <hr />
         <br />
 
@@ -168,7 +138,7 @@ function CreateProduct() {
                 ))}
             </select>
           </div>
-          {/* <div className="w-[45%]">
+          <div className="w-[45%]">
             <label className="pb-2">
               Subcategory <span className="text-red-500">*</span>
             </label>
@@ -182,13 +152,13 @@ function CreateProduct() {
               {categories &&
                 categories
                   .find((cat) => cat.name === category)
-                  ?.children.map((i, index) => (
-                    <option key={index} value={i.name}>
+                  ?.children?.map((i, index) => (
+                    <option key={i.name} value={i.name}>
                       {i.name}
                     </option>
                   ))}
             </select>
-          </div> */}
+          </div>
         </div>
 
         <br />
@@ -321,4 +291,4 @@ function CreateProduct() {
   );
 }
 
-export default CreateProduct;
+export default ProductForm;

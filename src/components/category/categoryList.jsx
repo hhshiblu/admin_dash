@@ -171,11 +171,6 @@ function CategoryList({ data }) {
             expandOpen: <IoIosArrowDown />,
           }}
         />
-        {data.map((item, i) => (
-          <div className="flex flex-col gap-4" key={i}>
-            {item.name}
-          </div>
-        ))}
       </div>
       <div>
         {confirm && <AddCategory data={data} setConfirm={setConfirm} />}

@@ -1,18 +1,13 @@
-import Products from "@/components/products/products";
-import React, { Suspense } from "react";
+import { DataProductTable } from "@/components/products/productTable";
 
-function page() {
+import { getProducts } from "@/serverAction/product";
+
+async function page() {
+  const products = await getProducts();
   return (
-    <div className="max-h-[89vh] overflow-y-scroll overflow-hidden">
-      <div className=" py-4 pl-8 text-[17px] font-semibold ">
-        <h2>All Products</h2>
-      </div>
-      <hr className="px-6" />
-      <hr className="px-6" />
+    <div>
       <div className="px-4 pt-2">
-        <Suspense fallback={<p>loading ..</p>}>
-          <Products />
-        </Suspense>
+        <DataProductTable data={products} />
       </div>
     </div>
   );

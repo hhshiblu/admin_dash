@@ -1,94 +1,115 @@
-import { DataTableDemo } from "@/components/demo";
-import Image from "next/image";
+"use client";
 import Link from "next/link";
+import { useState } from "react";
 import { FiAlignLeft } from "react-icons/fi";
-const data = [
+
+const mainMenu = [
   {
-    id: "hasan",
-    amount: 316,
-    status: "no",
-    email: "ken99@hsahfdj.com",
+    id: 1,
+    icon: "zp zp-home",
+    label: "DashBoard",
+    link: "/admin-dashboard",
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
+    id: 2,
+    icon: "zp zp-info",
+    label: "Banar",
+    link: "/admin-dashboard/banar",
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
+    id: 90,
+    icon: "zp zp-info",
+    label: "User",
+    link: "/admin-dashboard/all_users",
   },
   {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
+    id: 90,
+    icon: "zp zp-info",
+    label: "Seller",
+    link: "/admin-dashboard/all_sellers",
   },
   {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
+    id: 3,
+    icon: "zp zp-credit-card",
+    label: "Order",
+    subMenuItems: [
+      {
+        id: 21,
+        icon: "zp zp-circle",
+        label: "All orders",
+        link: "/admin-dashboard/all-orders",
+      },
+      {
+        id: 22,
+        icon: "zp zp-circle",
+        label: "Refund Orders",
+        link: "/admin-dashboard/refunds-order",
+      },
+    ],
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
+    id: 4,
+    icon: "zp zp-credit-card",
+    label: "Products",
+    subMenuItems: [
+      {
+        id: 21,
+        icon: "zp zp-circle",
+        label: "All Product",
+        link: "/admin-dashboard/all-products",
+      },
+      {
+        id: 22,
+        icon: "zp zp-circle",
+        label: "Create Product",
+        link: "/admin-dashboard/create-product",
+      },
+    ],
   },
   {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
+    id: 5,
+    icon: "zp zp-credit-card",
+    label: "Category",
+    subMenuItems: [
+      {
+        id: 21,
+        icon: "zp zp-circle",
+        label: "All Category",
+        link: "/admin-dashboard/category",
+      },
+      {
+        id: 22,
+        icon: "zp zp-circle",
+        label: "Create Category",
+        link: "/admin-dashboard/create-category",
+      },
+    ],
   },
 ];
+
 export default function Home() {
+  const [mobileNavClick, setMobileNavClick] = useState(false);
+  const [activeSubMenu, setActiveSubMenu] = useState(null);
+
+  const toggleSubMenu = (id) => {
+    if (activeSubMenu === id) {
+      // setActiveSubArrow(false);
+      setActiveSubMenu(null);
+    }
+    // else {
+    //   if (!activeSubArrow) {
+    //     setActiveSubMenu(id);
+    //   }
+    //   if (id === 3) {
+    //     // setActiveSubArrow(true);
+    //   }
+    //   if (mobileNavClick && mobileNav) {
+    //     if (id !== 3) {
+    //       setMobileNav(false);
+    //     }
+    //   }
+    // }
+  };
   return (
     <main>
       <div>
@@ -99,6 +120,7 @@ export default function Home() {
                 size={25}
                 color="white"
                 className=" cursor-pointer"
+                onClick={() => setMobileNavClick(!mobileNavClick)}
               />
 
               <h2 className="text-white ">Raj-Dhola</h2>
@@ -110,8 +132,41 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="h-[92vh] w-[250px] bg-black">
-          <h2>jfjasj</h2>
+        <div
+          className="h-[92vh] w-[250px] bg-red-400  duration-700"
+          style={{
+            width: mobileNavClick ? "75px" : "225px",
+          }}
+        >
+          <ul>
+            {mainMenu.map((item) => (
+              <li key={item.id} className="hover:bg-gray-300  ">
+                <Link
+                  className="px-4	py-2.5 flex text-sm	font-semibold items-center text-white"
+                  href={item.link || "#"}
+                  onClick={() => toggleSubMenu(item.id)}
+                >
+                  {!mobileNavClick ? <span>{item.label}</span> : null}
+                </Link>
+                {item.subMenuItems && activeSubMenu === item.id && (
+                  <ul>
+                    {item.subMenuItems.map((subItem) => (
+                      <li key={subItem.id}>
+                        <Link
+                          className="mx-2.5 text-sm	font-medium py-2.5 block text-slate-600"
+                          href={subItem.link || "#"}
+                          onClick={() => clickSubMenu(item.id)}
+                        >
+                          <i className={subItem.icon + " pl-1.5 pr-3"}></i>
+                          {subItem.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </main>

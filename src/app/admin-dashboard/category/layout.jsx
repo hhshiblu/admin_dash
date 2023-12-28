@@ -9,12 +9,7 @@ function layout({ children }) {
 
       <hr />
       <hr />
-      <div>
-        {/* <Suspense fallback={<p>loading...</p>}>
-          <Category />
-        </Suspense> */}
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
   );
 }

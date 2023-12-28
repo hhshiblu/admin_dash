@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import shortid from "shortid";
 import slugify from "slugify";
 
-export async function createCategories(categories, parentId = null) {
+function createCategories(categories, parentId = null) {
   const categoryList = [];
   let category;
   if (parentId == null) {
@@ -35,7 +35,7 @@ export const getCategories = async () => {
     const category = await collection.find({}).toArray();
 
     const categoryList = createCategories(category);
-
+    console.log(categoryList);
     return categoryList;
   } catch (err) {
     return err.message;
@@ -74,7 +74,7 @@ export const addCategory = async (FormData) => {
 
     const name = FormData.get("name");
     const parentId = FormData.get("parentId");
-    // console.log(name, parentId);
+
     const categoryObj = {
       name: name,
       slug: `${slugify(name)}-${shortid.generate()}`,
@@ -84,6 +84,7 @@ export const addCategory = async (FormData) => {
     } else {
       categoryObj.parentId = null;
     }
+    console.log(categoryObj);
     const cate = await collection.insertOne(categoryObj);
     if (cate.acknowledged == true) {
       revalidatePath("/admin-dashboard/category");
