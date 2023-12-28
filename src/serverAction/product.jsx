@@ -66,3 +66,7 @@ export const deleteProductAction = async (id) => {
     return error.message;
   }
 };
+
+export const handelProducts = async (formData) => {
+  console.log(formData.getAll("images"));
+};

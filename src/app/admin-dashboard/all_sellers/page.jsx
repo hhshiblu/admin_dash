@@ -15,10 +15,10 @@ const getSellers = async () => {
     return error.message;
   }
 };
-
+export const dynamic = "force-dynamic";
 async function page() {
   const sellers = await getSellers();
-  console.log(sellers);
+
   return <SellerTable data={sellers} />;
 }
 

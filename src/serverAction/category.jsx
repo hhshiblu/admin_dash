@@ -4,8 +4,6 @@ import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import shortid from "shortid";
 import slugify from "slugify";
-// import { cache } from "react";
-// Your code here
 
 export async function createCategories(categories, parentId = null) {
   const categoryList = [];
@@ -29,20 +27,20 @@ export async function createCategories(categories, parentId = null) {
   return categoryList;
 }
 
-// export const getCategories = async () => {
-//   try {
-//     const db = await connectToDB();
-//     const collection = db.collection("categories");
+export const getCategories = async () => {
+  try {
+    const db = await connectToDB();
+    const collection = db.collection("categories");
 
-//     const category = await collection.find({}).toArray();
+    const category = await collection.find({}).toArray();
 
-//     const categoryList = createCategories(category);
+    const categoryList = createCategories(category);
 
-//     return categoryList;
-//   } catch (err) {
-//     return err.message;
-//   }
-// };
+    return categoryList;
+  } catch (err) {
+    return err.message;
+  }
+};
 
 export const deleteCate = async (ids) => {
   try {

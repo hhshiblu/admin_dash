@@ -169,14 +169,6 @@ function RootLayout({ children }) {
             >
               toggle
             </h2>
-            {/* <Image
-
-                className="w-9 h-9 mx-4 rounded-full my-3.5 cursor-pointer"
-                onClick={ProfileMenu}
-                src="https://lh3.googleusercontent.com/a/ACg8ocL4ioY5yHg1l43UIHDEZW4yB9TGWocuth2t-3rn7Wwq1w=s96-c-rg-br100"
-                width={9}
-                height={9}
-              ></Image> */}
             <h2 onClick={ProfileMenu}>Rajdhola</h2>
 
             <div className="ml-auto	">
@@ -262,15 +254,6 @@ function RootLayout({ children }) {
                     href={item.link || "#"}
                     onClick={() => toggleSubMenu(item.id)}
                   >
-                    {/* <i
-                        className={
-                          item.icon +
-                          " h-6 w-6 text-center bg-blue-100 text-gray-400 rounded mr-2.5 flex items-center justify-center"
-                        }
-                      ></i> */}
-                    {/* <h2 className="h-6 w-6 text-center bg-blue-100 text-gray-400 rounded mr-2.5 flex items-center justify-center">
-                        toggle
-                      </h2> */}
                     <span>{item.label}</span>
                     {item.label == "Payments" ? (
                       <i

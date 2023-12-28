@@ -1,6 +1,6 @@
 import Orders from "@/components/orders/orders";
 import React, { Suspense } from "react";
-
+export const dynamic = "force-dynamic";
 function page() {
   return (
     <div className="min-h-[80vh] ">

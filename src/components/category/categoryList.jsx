@@ -157,7 +157,7 @@ function CategoryList({ data }) {
         </div>
       </div>
       <div className="w-full pl-14 pt-2">
-        {/* <CheckboxTree
+        <CheckboxTree
           nodes={renderCategories(data)}
           checked={checked}
           expanded={expanded}
@@ -170,7 +170,7 @@ function CategoryList({ data }) {
             expandClose: <IoIosArrowForward />,
             expandOpen: <IoIosArrowDown />,
           }}
-        /> */}
+        />
         {data.map((item, i) => (
           <div className="flex flex-col gap-4" key={i}>
             {item.name}

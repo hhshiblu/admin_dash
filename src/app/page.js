@@ -91,19 +91,27 @@ const data = [
 export default function Home() {
   return (
     <main>
-      <DataTableDemo data={data} />
       <div>
         <div className="h-[8vh] bg-[#05595B] w-full ">
           <div className="flex justify-between items-center h-full my-auto mx-10">
             <div className="flex gap-6 items-center ">
-              <FiAlignLeft size={25} color="white" />
+              <FiAlignLeft
+                size={25}
+                color="white"
+                className=" cursor-pointer"
+              />
 
               <h2 className="text-white ">Raj-Dhola</h2>
             </div>
-            <div>
-              <h2 className="text-white">Home</h2>
+            <div className="flex flex-row gap-4">
+              <FiAlignLeft size={25} color="white" />
+              <FiAlignLeft size={25} color="white" />
+              <FiAlignLeft size={25} color="white" />
             </div>
           </div>
+        </div>
+        <div className="h-[92vh] w-[250px] bg-black">
+          <h2>jfjasj</h2>
         </div>
       </div>
     </main>
