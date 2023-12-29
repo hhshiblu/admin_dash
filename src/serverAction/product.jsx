@@ -1,6 +1,12 @@
 "use server";
-import { cloudinaryUpload, uploadImagesToCloudinary } from "@/lib/cloudinary";
+
 import connectToDB from "@/lib/connect";
+import {
+  deleteImagesFromCloudinary,
+  savePhotoLocal,
+  uploadImagesToCloudinary,
+} from "@/lib/imageUpload";
+import fs from "fs/promises";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 export const getProducts = async () => {
@@ -13,6 +19,7 @@ export const getProducts = async () => {
       const {
         _id,
         name,
+        images,
         originalPrice,
         discountPrice,
         sold_out,
@@ -25,11 +32,11 @@ export const getProducts = async () => {
       const formattedDate = `${dateObject.getDate()}/${
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()}`;
-      // date object
 
       return {
         id: _id.toString(),
         name,
+        images,
         originalPrice,
         discountPrice,
         sold_out,
@@ -54,11 +61,13 @@ export const getProduct = async (id) => {
     return error.message;
   }
 };
-export const deleteProductAction = async (id) => {
+export const deleteProductAction = async (id, public_id) => {
   try {
     const db = await connectToDB();
     const collection = db.collection("products");
+    const s = await deleteImagesFromCloudinary(public_id);
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    console.log(result, s);
     if (result.acknowledged == true) {
       revalidatePath("/admin-dashboard/all-products");
       return (message = "User deleted successfully");
@@ -68,20 +77,54 @@ export const deleteProductAction = async (id) => {
   }
 };
 
-export const handelProducts = async (formData) => {
-  const images = formData.getAll("images");
-  const imageUrls = await uploadImagesToCloudinary(images, "hhh");
-  console.log(imageUrls);
-  const name = formData.get("name");
-  const description = formData.get("description");
-  const category = formData.get("category");
-  const tags = formData.get("tags");
-  const subCategory = formData.get("subCategory");
-  const originalPrice = parseInt(formData.get("originalPrice"));
-  const discountPrice = parseInt(formData.get("discountPrice"));
-  const stock = parseInt(formData.get("stock"));
-  const color = formData.getAll("color[]"); // Parse colors as an array
-  const size = formData.getAll("size[]");
-  const sellerId = formData.get("sellerId");
-  // console.log(name, discountPrice);
+export const CreateProducts = async (formData) => {
+  try {
+    const db = await connectToDB();
+    const collection = db.collection("products");
+    const images = formData.getAll("images");
+    const newFiles = await savePhotoLocal(images);
+    const photos = await uploadImagesToCloudinary(newFiles);
+    newFiles.map((file) => fs.unlink(file.filepath));
+    const newPhotos = photos.map((photo) => {
+      const newphoto = {
+        public_id: photo.public_id,
+        secure_url: photo.secure_url,
+      };
+      return newphoto;
+    });
+    const name = formData.get("name");
+    const description = formData.get("description");
+    const category = formData.get("category");
+    const tags = formData.get("tags");
+    const subCategory = formData.get("subCategory");
+    const originalPrice = parseInt(formData.get("originalPrice"));
+    const discountPrice = parseInt(formData.get("discountPrice"));
+    const stock = parseInt(formData.get("stock"));
+    const color = formData.getAll("color[]"); // Parse colors as an array
+    const size = formData.getAll("size[]");
+    const sellerId = formData.get("sellerId");
+
+    const product = {
+      name,
+      description,
+      images: newPhotos,
+      category,
+      subCategory,
+      tags,
+      originalPrice,
+      discountPrice,
+      stock,
+      color,
+      size,
+      sellerId,
+      sold_out: 0,
+      ratings: 0,
+      reviews: [],
+      createdAt: new Date(),
+    };
+    await collection.insertOne(product);
+    revalidatePath("/");
+  } catch (error) {
+    return { message: error.message };
+  }
 };

@@ -288,17 +288,8 @@ function RootLayout({ children }) {
             </ul>
           </nav>
         </>
-        <div
-          className={`${
-            mobileNavClick
-              ? mobileNavClick
-                ? "w-full"
-                : "w-[calc(100%-288px)] ml-auto"
-              : "w-[calc(100%-288px)] ml-auto"
-          }`}
-        >
-          {children}
-        </div>
+
+        {children}
       </body>
     </html>
   );

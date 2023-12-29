@@ -1,11 +1,15 @@
 "use client";
-import { handelProducts } from "@/serverAction/product";
-import React, { useRef, useState } from "react";
+
+import React, { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { CreateProducts } from "@/serverAction/product";
+
+import Photocard from "./photocard";
+
 const colorsData = ["Red", "White", "Green", "blue", "yellow"];
 const sizesData = ["22", "23", "29", "42", "s", "m", "l", "xl", "xxl"];
+
 function ProductForm({ categories }) {
-  const ref = useRef(null);
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [selectedColors, setSelectedColors] = useState([]);
@@ -41,11 +45,19 @@ function ProductForm({ categories }) {
   });
 
   const handleImageChange = (e) => {
-    e.preventDefault();
-
-    let files = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...files]);
+    const files = e.target.files;
+    const newFiles = [...files].filter((file) => {
+      if (file.size < 1024 * 1024 && file.type.startsWith("image/")) {
+        return file;
+      }
+    });
+    setImages((prev) => [...newFiles, ...prev]);
   };
+
+  async function handelDeleteFile(index) {
+    const newFiles = images.filter((_, i) => i !== index);
+    setImages(newFiles);
+  }
 
   const handelChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +65,7 @@ function ProductForm({ categories }) {
   };
 
   const HandelSubmit = async () => {
+    if (images.length > 5) return alert("upload up to 5 image files");
     const sellerId = "6461e1231d468f007eb5d6d9";
     const newForm = new FormData();
 
@@ -69,6 +82,7 @@ function ProductForm({ categories }) {
     newForm.append("discountPrice", product.discountPrice);
     newForm.append("stock", product.stock);
 
+    // Add selected colors and sizes to the form data
     selectedColors.forEach((color) => {
       newForm.append("color[]", color);
     });
@@ -77,13 +91,15 @@ function ProductForm({ categories }) {
       newForm.append("size[]", size);
     });
 
+    // Pass the seller ID as a single value
     newForm.append("sellerId", sellerId);
-    await handelProducts(newForm);
+    let res = await CreateProducts(newForm);
   };
+
   return (
     <div>
       {" "}
-      <form action={HandelSubmit} ref={ref}>
+      <form action={HandelSubmit}>
         <hr />
         <br />
 
@@ -152,8 +168,8 @@ function ProductForm({ categories }) {
               {categories &&
                 categories
                   .find((cat) => cat.name === category)
-                  ?.children?.map((i, index) => (
-                    <option key={i.name} value={i.name}>
+                  ?.children.map((i, index) => (
+                    <option key={index} value={i.name}>
                       {i.name}
                     </option>
                   ))}
@@ -209,44 +225,46 @@ function ProductForm({ categories }) {
           ))}
         </div>
         <br />
-        <div>
-          <label className="pb-2">Original Price</label>
-          <input
-            type="number"
-            name="originalPrice"
-            value={product.originalPrice}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={handelChange}
-            placeholder="Enter your product price..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Price (With Discount) <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            name="discountPrice"
-            value={product.discountPrice}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={handelChange}
-            placeholder="Enter your product price with discount..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Product Stock <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            name="stock"
-            value={product.stock}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={handelChange}
-            placeholder="Enter your product stock..."
-          />
+        <div className="flex gap-2 flex-col sm:flex-row m-auto">
+          <div>
+            <label className="pb-2">Original Price</label>
+            <input
+              type="number"
+              name="originalPrice"
+              value={product.originalPrice}
+              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              onChange={handelChange}
+              placeholder="Enter your product price..."
+            />
+          </div>
+          <br />
+          <div>
+            <label className="pb-2">
+              Price (With Discount) <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              name="discountPrice"
+              value={product.discountPrice}
+              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              onChange={handelChange}
+              placeholder="Enter your product price with discount..."
+            />
+          </div>
+          <br />
+          <div>
+            <label className="pb-2">
+              Product Stock <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              name="stock"
+              value={product.stock}
+              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              onChange={handelChange}
+              placeholder="Enter your product stock..."
+            />
+          </div>
         </div>
         <br />
         <div>
@@ -266,14 +284,11 @@ function ProductForm({ categories }) {
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
             {images &&
-              images.map((i) => (
-                <Image
-                  src={URL.createObjectURL(i)}
-                  key={i}
-                  alt=""
-                  width={60}
-                  height={60}
-                  className="h-[60px] w-[60px] object-cover m-2 mt-4 rounded-sm"
+              images.map((files, index) => (
+                <Photocard
+                  key={index}
+                  url={URL.createObjectURL(files)}
+                  onClick={() => handelDeleteFile(index)}
                 />
               ))}
           </div>

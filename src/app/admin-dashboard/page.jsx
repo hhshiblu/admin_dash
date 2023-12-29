@@ -11,7 +11,7 @@ const DashboardHero = () => {
   const availableBalance = 234;
 
   return (
-    <div className="w-full p-8  h-[90vh] overflow-y-scroll overflow-hidden">
+    <div className="w-full md:w-[calc(100%-300px)] ml-auto p-8  h-[90vh] overflow-y-scroll overflow-hidden">
       <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
       <Suspense fallback={true}>
         <MainInformation />

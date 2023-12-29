@@ -179,7 +179,15 @@ export const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const product = row.original;
-      const deleteProduct = deleteProductAction.bind(null, product.id);
+      const public_ids = product?.images?.map((image) => {
+        return image.public_id;
+      });
+
+      const deleteProduct = () => {
+        public_ids.forEach((public_id) => {
+          deleteProductAction(product.id, public_id);
+        });
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

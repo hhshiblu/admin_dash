@@ -35,7 +35,6 @@ export const getCategories = async () => {
     const category = await collection.find({}).toArray();
 
     const categoryList = createCategories(category);
-    console.log(categoryList);
     return categoryList;
   } catch (err) {
     return err.message;
