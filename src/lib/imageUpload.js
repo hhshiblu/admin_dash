@@ -36,11 +36,3 @@ export async function uploadImagesToCloudinary(newFiles) {
   );
   return await Promise.all(multiplePhotos);
 }
-
-export async function deleteImagesFromCloudinary(id) {
-  try {
-    await cloudinary.v2.uploader.destroy(id);
-
-    return { mes: "deleteImages" };
-  } catch (error) {}
-}

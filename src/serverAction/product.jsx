@@ -84,14 +84,15 @@ export const CreateProducts = async (formData) => {
     const images = formData.getAll("images");
     const newFiles = await savePhotoLocal(images);
     const photos = await uploadImagesToCloudinary(newFiles);
-    newFiles.map((file) => fs.unlink(file.filepath));
-    const newPhotos = photos.map((photo) => {
-      const newphoto = {
-        public_id: photo.public_id,
-        secure_url: photo.secure_url,
-      };
-      return newphoto;
-    });
+    // newFiles.map((file) => fs.unlink(file.filepath));
+    // const newPhotos = photos.map((photo) => {
+    //   const newphoto = {
+    //     public_id: photo.public_id,
+    //     secure_url: photo.secure_url,
+    //   };
+    //   return newphoto;
+    // });
+    console.log(newFiles);
     const name = formData.get("name");
     const description = formData.get("description");
     const category = formData.get("category");
@@ -107,7 +108,7 @@ export const CreateProducts = async (formData) => {
     const product = {
       name,
       description,
-      images: newPhotos,
+      images: photos,
       category,
       subCategory,
       tags,
@@ -122,9 +123,11 @@ export const CreateProducts = async (formData) => {
       reviews: [],
       createdAt: new Date(),
     };
-    await collection.insertOne(product);
-    revalidatePath("/");
+    // const res = await collection.insertOne(product);
+    console.log(product);
+    // revalidatePath("/");
   } catch (error) {
+    console.log(error);
     return { message: error.message };
   }
 };
