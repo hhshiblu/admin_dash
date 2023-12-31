@@ -11,7 +11,7 @@ export const authOptions = {
       try {
         const db = await connectToDB();
         const collection = db.collection("users");
-        console.log("user", user);
+
         const findUser = await collection.findOne({ email: user.email });
         if (findUser && findUser.role === "admin") {
           return true;
@@ -26,7 +26,7 @@ export const authOptions = {
         user.role = "admin";
         token.user = user;
       }
-      console.log("token", token);
+
       return token;
     },
 
@@ -56,7 +56,7 @@ export const authOptions = {
       },
       async authorize(credentials, req) {
         const { email, password } = credentials;
-        console.log(email, password);
+
         const db = await connectToDB();
         const collection = db.collection("users");
         const user = await collection.findOne({ email: email });
