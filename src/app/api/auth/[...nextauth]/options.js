@@ -11,9 +11,8 @@ export const authOptions = {
       try {
         const db = await connectToDB();
         const collection = db.collection("users");
-        const findUser = await collection
-          .findOne({ email: user.email })
-          .project({ password: 0 });
+        console.log("user", user);
+        const findUser = await collection.findOne({ email: user.email });
         if (findUser && findUser.role === "admin") {
           return true;
         }
@@ -27,10 +26,11 @@ export const authOptions = {
         user.role = "admin";
         token.user = user;
       }
+      console.log("token", token);
       return token;
     },
 
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user = token.user;
 
       return session;
@@ -59,9 +59,7 @@ export const authOptions = {
         console.log(email, password);
         const db = await connectToDB();
         const collection = db.collection("users");
-        const user = await collection
-          .findOne({ email: email })
-          .project({ password: 0 });
+        const user = await collection.findOne({ email: email });
 
         if (!user) {
           throw new Error("Invalied credentials");
