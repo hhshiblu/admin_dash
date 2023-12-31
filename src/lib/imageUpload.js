@@ -1,10 +1,10 @@
 "use server";
 
 import path from "path";
-import fs from "fs";
+import fs from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 import os from "os";
-import cloudinary from "./cloudinary";
+import cloudinary from "cloudinary";
 
 export async function savePhotoLocal(formData) {
   const multibuffer = formData.map((file) =>
@@ -23,37 +23,17 @@ export async function savePhotoLocal(formData) {
   return await Promise.all(multibuffer);
 }
 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
 export async function uploadImagesToCloudinary(newFiles) {
   const multiplePhotos = newFiles.map((file) =>
     cloudinary.v2.uploader.upload(file.filepath, { folder: "rajdhola" })
   );
   return await Promise.all(multiplePhotos);
 }
-export async function uploadImages(filePath) {
-  return new Promise(async (resolve, reject) => {
-    fs.readFile(filePath, async (err, buffer) => {
-      if (err) {
-        return reject(err);
-      }
 
-      const bytes = Buffer.from(buffer);
-
-      cloudinary.uploader
-        .upload_stream(
-          {
-            resource_type: "auto",
-            folder: "raj_images",
-          },
-          async (err, result) => {
-            if (err) {
-              return reject(err.message);
-            }
-            return resolve(result);
-          }
-        )
-        .end(bytes);
-    });
-  });
-}
-
-export async function deleteImagesFromCloudinary() {}
+// export async function deleteImagesFromCloudinary() {}

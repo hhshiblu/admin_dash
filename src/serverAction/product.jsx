@@ -2,11 +2,11 @@
 
 import connectToDB from "@/lib/connect";
 import {
-  deleteImagesFromCloudinary,
+  // deleteImagesFromCloudinary,
   savePhotoLocal,
-  uploadImages,
   uploadImagesToCloudinary,
 } from "@/lib/imageUpload";
+import fs from "fs/promises";
 
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
@@ -66,7 +66,7 @@ export const deleteProductAction = async (id, public_id) => {
   try {
     const db = await connectToDB();
     const collection = db.collection("products");
-    const s = await deleteImagesFromCloudinary(public_id);
+    // const s = await deleteImagesFromCloudinary(public_id);
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
 
     if (result.acknowledged == true) {
@@ -83,19 +83,19 @@ export const CreateProducts = async (formData) => {
     const db = await connectToDB();
     const collection = db.collection("products");
     const images = formData.getAll("images");
-    const data = await uploadImages(images);
-    console.log(data);
     const newFiles = await savePhotoLocal(images);
+
     const photos = await uploadImagesToCloudinary(newFiles);
-    // newFiles.map((file) => fs.unlink(file.filepath));
-    // const newPhotos = photos.map((photo) => {
-    //   const newphoto = {
-    //     public_id: photo.public_id,
-    //     secure_url: photo.secure_url,
-    //   };
-    //   return newphoto;
-    // });
-    console.log(newFiles);
+    newFiles.map((file) => fs.unlink(file.filepath));
+
+    const newPhotos = photos.map((photo) => {
+      const newphoto = {
+        public_id: photo.public_id,
+        secure_url: photo.secure_url,
+      };
+      return newphoto;
+    });
+
     const name = formData.get("name");
     const description = formData.get("description");
     const category = formData.get("category");
@@ -111,7 +111,7 @@ export const CreateProducts = async (formData) => {
     const product = {
       name,
       description,
-      images: photos,
+      images: newPhotos,
       category,
       subCategory,
       tags,
