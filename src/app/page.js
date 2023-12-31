@@ -1,172 +1,127 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
-import { FiAlignLeft } from "react-icons/fi";
 
-const mainMenu = [
-  {
-    id: 1,
-    icon: "zp zp-home",
-    label: "DashBoard",
-    link: "/admin-dashboard",
-  },
-  {
-    id: 2,
-    icon: "zp zp-info",
-    label: "Banar",
-    link: "/admin-dashboard/banar",
-  },
-  {
-    id: 90,
-    icon: "zp zp-info",
-    label: "User",
-    link: "/admin-dashboard/all_users",
-  },
-  {
-    id: 90,
-    icon: "zp zp-info",
-    label: "Seller",
-    link: "/admin-dashboard/all_sellers",
-  },
-  {
-    id: 3,
-    icon: "zp zp-credit-card",
-    label: "Order",
-    subMenuItems: [
-      {
-        id: 21,
-        icon: "zp zp-circle",
-        label: "All orders",
-        link: "/admin-dashboard/all-orders",
-      },
-      {
-        id: 22,
-        icon: "zp zp-circle",
-        label: "Refund Orders",
-        link: "/admin-dashboard/refunds-order",
-      },
-    ],
-  },
-  {
-    id: 4,
-    icon: "zp zp-credit-card",
-    label: "Products",
-    subMenuItems: [
-      {
-        id: 21,
-        icon: "zp zp-circle",
-        label: "All Product",
-        link: "/admin-dashboard/all-products",
-      },
-      {
-        id: 22,
-        icon: "zp zp-circle",
-        label: "Create Product",
-        link: "/admin-dashboard/create-product",
-      },
-    ],
-  },
-  {
-    id: 5,
-    icon: "zp zp-credit-card",
-    label: "Category",
-    subMenuItems: [
-      {
-        id: 21,
-        icon: "zp zp-circle",
-        label: "All Category",
-        link: "/admin-dashboard/category",
-      },
-      {
-        id: 22,
-        icon: "zp zp-circle",
-        label: "Create Category",
-        link: "/admin-dashboard/create-category",
-      },
-    ],
-  },
-];
+import React, { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
+import { useRouter } from "next/navigation";
+
+import { signIn } from "next-auth/react";
 
 export default function Home() {
-  const [mobileNavClick, setMobileNavClick] = useState(false);
-  const [activeSubMenu, setActiveSubMenu] = useState(null);
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [visible, setVisible] = useState(false);
 
-  const toggleSubMenu = (id) => {
-    if (activeSubMenu === id) {
-      // setActiveSubArrow(false);
-      setActiveSubMenu(null);
-    }
-    // else {
-    //   if (!activeSubArrow) {
-    //     setActiveSubMenu(id);
-    //   }
-    //   if (id === 3) {
-    //     // setActiveSubArrow(true);
-    //   }
-    //   if (mobileNavClick && mobileNav) {
-    //     if (id !== 3) {
-    //       setMobileNav(false);
-    //     }
-    //   }
-    // }
+  const hendelSubmit = async (e) => {
+    e.preventDefault();
+    await signIn("credentials", {
+      email,
+      password,
+      callbackUrl: "/admin-dashboard",
+    });
   };
   return (
     <main>
       <div>
-        <div className="h-[8vh] bg-[#05595B] w-full ">
-          <div className="flex justify-between items-center h-full my-auto mx-10">
-            <div className="flex gap-6 items-center ">
-              <FiAlignLeft
-                size={25}
-                color="white"
-                className=" cursor-pointer"
-                onClick={() => setMobileNavClick(!mobileNavClick)}
-              />
+        <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+          <div className=" sm:mx-auto sm:w-full sm:max-w-md ">
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              Login to for admin account
+            </h2>
+          </div>
 
-              <h2 className="text-white ">Raj-Dhola</h2>
-            </div>
-            <div className="flex flex-row gap-4">
-              <FiAlignLeft size={25} color="white" />
-              <FiAlignLeft size={25} color="white" />
-              <FiAlignLeft size={25} color="white" />
+          <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+              <form className="space-y-6" onSubmit={hendelSubmit}>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email address
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password
+                  </label>
+                  <div className="mt-1 relative">
+                    <input
+                      type={visible ? "text" : "password"}
+                      name="password"
+                      autoComplete="curent-password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-500 sm:text-sm"
+                    />
+                    {visible ? (
+                      <AiOutlineEye
+                        className=" absolute right-3 top-2 cursor-pointer"
+                        size={25}
+                        onClick={() => setVisible(false)}
+                      />
+                    ) : (
+                      <AiOutlineEyeInvisible
+                        className=" absolute right-3 top-2 cursor-pointer"
+                        size={25}
+                        onClick={() => setVisible(true)}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className={`flex items-center justify-between `}>
+                  <div className={`flex items-center `}>
+                    <input
+                      type="checkbox"
+                      name="remember-me"
+                      id="remember-me"
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded "
+                    />
+                    <label
+                      htmlFor="remember-me"
+                      className="ml-2 block
+                 text-gray-900"
+                    >
+                      {" "}
+                      Remember me
+                    </label>
+                  </div>
+                  <div className="text-sm">
+                    <a
+                      href="forgot-password"
+                      className="font-medium text-blue-500 hover:text-blue-600"
+                    >
+                      Forgot password
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className=" group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white shadow-sm bg-blue-600 hover:bg-blue-800 "
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-        </div>
-        <div
-          className="h-[92vh] w-[250px] bg-red-400  duration-700"
-          style={{
-            width: mobileNavClick ? "75px" : "225px",
-          }}
-        >
-          <ul>
-            {mainMenu.map((item) => (
-              <li key={item.id} className="hover:bg-gray-300  ">
-                <Link
-                  className="px-4	py-2.5 flex text-sm	font-semibold items-center text-white"
-                  href={item.link || "#"}
-                  onClick={() => toggleSubMenu(item.id)}
-                >
-                  {!mobileNavClick ? <span>{item.label}</span> : null}
-                </Link>
-                {item.subMenuItems && activeSubMenu === item.id && (
-                  <ul>
-                    {item.subMenuItems.map((subItem) => (
-                      <li key={subItem.id}>
-                        <Link
-                          className="mx-2.5 text-sm	font-medium py-2.5 block text-slate-600"
-                          href={subItem.link || "#"}
-                          onClick={() => clickSubMenu(item.id)}
-                        >
-                          <i className={subItem.icon + " pl-1.5 pr-3"}></i>
-                          {subItem.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </main>

@@ -4,9 +4,10 @@ import connectToDB from "@/lib/connect";
 import {
   deleteImagesFromCloudinary,
   savePhotoLocal,
+  uploadImages,
   uploadImagesToCloudinary,
 } from "@/lib/imageUpload";
-import fs from "fs/promises";
+
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 export const getProducts = async () => {
@@ -67,7 +68,7 @@ export const deleteProductAction = async (id, public_id) => {
     const collection = db.collection("products");
     const s = await deleteImagesFromCloudinary(public_id);
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
-    console.log(result, s);
+
     if (result.acknowledged == true) {
       revalidatePath("/admin-dashboard/all-products");
       return (message = "User deleted successfully");
@@ -82,6 +83,8 @@ export const CreateProducts = async (formData) => {
     const db = await connectToDB();
     const collection = db.collection("products");
     const images = formData.getAll("images");
+    const data = await uploadImages(images);
+    console.log(data);
     const newFiles = await savePhotoLocal(images);
     const photos = await uploadImagesToCloudinary(newFiles);
     // newFiles.map((file) => fs.unlink(file.filepath));

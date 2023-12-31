@@ -3,7 +3,7 @@ import React, { Suspense } from "react";
 export const dynamic = "force-dynamic";
 function page() {
   return (
-    <div className="min-h-[80vh] ">
+    <div className=" w-full md:w-[calc(100%-300px)] ml-auto min-h-[80vh] ">
       <div className=" py-4 pl-8 text-[17px] font-semibold ">
         <h2>All Orders</h2>
       </div>
