@@ -5,7 +5,7 @@ export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   const token = await getToken({ req: request });
-
+  console.log(token);
   const userProtectedRoutes = [
     "/admin-dashboard",
     "/admin-dashboard/category",
