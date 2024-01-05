@@ -5,24 +5,29 @@ import fs from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 import os from "os";
 import cloudinary from "cloudinary";
+import { revalidatePath } from "next/cache";
 
 export async function savePhotoLocal(formData) {
-  const multibuffer = formData.map((file) =>
-    file.arrayBuffer().then((data) => {
-      const buffer = Buffer.from(data);
-      const name = uuidv4();
-      const ext = file.type.split("/")[1];
-      const tempdir = os.tmpdir();
+  const uploadPromises = formData.map(async (file) => {
+    const data = await file.arrayBuffer();
+    const buffer = Buffer.from(data);
+    const originalFilename = file.name;
+    const ext = path.extname(originalFilename).toLowerCase();
+    const uniqueFilename = `${uuidv4()}_${new Date().getTime()}${ext}`;
+    const uploadDir = path.join(
+      process.cwd(),
+      "public",
+      "upload",
+      uniqueFilename
+    );
 
-      const uploadDir = path.join(tempdir, `/${name}.${ext}`);
+    await fs.writeFile(uploadDir, buffer);
 
-      fs.writeFile(uploadDir, buffer);
-      return { filepath: uploadDir, filename: file.name };
-    })
-  );
-  return await Promise.all(multibuffer);
+    return { filename: uniqueFilename };
+  });
+
+  return Promise.all(uploadPromises);
 }
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
@@ -37,3 +42,13 @@ export async function uploadImagesToCloudinary(newFiles) {
 }
 
 // export async function deleteImagesFromCloudinary() {}
+
+export const deleteProduct = async (id) => {
+  try {
+    const res = await cloudinary.uploader.destroy(id);
+    revalidatePath("/admin-dashboard/create-product");
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};

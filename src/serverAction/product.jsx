@@ -1,11 +1,7 @@
 "use server";
 
 import connectToDB from "@/lib/connect";
-import {
-  // deleteImagesFromCloudinary,
-  savePhotoLocal,
-  uploadImagesToCloudinary,
-} from "@/lib/imageUpload";
+import { savePhotoLocal } from "@/lib/imageUpload";
 import fs from "fs/promises";
 
 import { ObjectId } from "mongodb";
@@ -84,18 +80,6 @@ export const CreateProducts = async (formData) => {
     const collection = db.collection("products");
     const images = formData.getAll("images");
     const newFiles = await savePhotoLocal(images);
-
-    const photos = await uploadImagesToCloudinary(newFiles);
-    newFiles.map((file) => fs.unlink(file.filepath));
-
-    const newPhotos = photos.map((photo) => {
-      const newphoto = {
-        public_id: photo.public_id,
-        secure_url: photo.secure_url,
-      };
-      return newphoto;
-    });
-
     const name = formData.get("name");
     const description = formData.get("description");
     const category = formData.get("category");
@@ -111,7 +95,7 @@ export const CreateProducts = async (formData) => {
     const product = {
       name,
       description,
-      images: newPhotos,
+      images: newFiles,
       category,
       subCategory,
       tags,
@@ -126,11 +110,28 @@ export const CreateProducts = async (formData) => {
       reviews: [],
       createdAt: new Date(),
     };
-    // const res = await collection.insertOne(product);
-    console.log(product);
-    // revalidatePath("/");
+    const res = await collection.insertOne(product);
+    console.log(res);
+    revalidatePath("/");
   } catch (error) {
-    console.log(error);
+    if (newFiles && newFiles.length > 0) {
+      await deleteUploadedImages(newFiles);
+    }
+
     return { message: error.message };
   }
+};
+
+const deleteUploadedImages = async (files) => {
+  const promises = files.map(async (file) => {
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "upload",
+      file.filename
+    );
+    await fs.unlink(filePath);
+  });
+
+  await Promise.all(promises);
 };

@@ -6,6 +6,7 @@ import { CreateProducts } from "@/serverAction/product";
 
 import Photocard from "./photocard";
 import SubmitButton from "@/components/products/buttonsubmit";
+import Image from "next/image";
 
 const colorsData = ["Red", "White", "Green", "blue", "yellow"];
 const sizesData = ["22", "23", "29", "42", "s", "m", "l", "xl", "xxl"];
@@ -298,6 +299,7 @@ function ProductForm({ categories }) {
           </div>
         </div>
       </form>
+      <div></div>
     </div>
   );
 }
