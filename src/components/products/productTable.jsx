@@ -246,6 +246,9 @@ export function DataProductTable({ data }) {
 
   return (
     <div className="w-full">
+      <h3 className="text-[12px] text-[#00456e]  font-semibold">
+        Total : {data.length}
+      </h3>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter by id..."

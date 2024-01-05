@@ -8,12 +8,7 @@ function layout({ children }) {
       </div>
       <hr className="px-6" />
       <hr className="px-6" />
-      <div className="px-4 pt-2">
-        {/* <Suspense fallback={<p>loading ..</p>}>
-          <UserData />
-        </Suspense> */}
-        {children}
-      </div>
+      <div className="px-4 pt-2">{children}</div>
     </div>
   );
 }

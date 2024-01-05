@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { UpdateSellerStatus, deleteSelleraction } from "@/serverAction/seller";
+import { toast } from "sonner";
 
 const hello = (id) => {
   //  <Helo/>
@@ -187,12 +188,6 @@ export const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const seller = row.original;
-      const deleteSeller = deleteSelleraction.bind(null, seller._id);
-
-      const updateStatus = async (status) => {
-        await UpdateSellerStatus(seller._id, status);
-      };
-      const [state, action] = useFormState(UpdateSellerStatus, null);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -210,41 +205,78 @@ export const columns = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Open menu</span>
-
-                    <h2 className="w-1 h-4">Update Status</h2>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Status</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <form
-                      action={async (formaData) => {
-                        await action("Active");
-                      }}
-                    >
-                      <button type="submit">Active</button>
-                    </form>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        updateStatus("Pending");
-                      }}
-                    >
-                      <button type="submit">Pending</button>
-                    </form>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {seller.status === "pending" ? (
+                <form
+                  action={() =>
+                    UpdateSellerStatus(seller._id, "active")
+                      .then((res) =>
+                        toast.success(res.message, {
+                          duration: 3000,
+                          cancel: {
+                            label: "cancel",
+                          },
+                        })
+                      )
+                      .catch((error) => {
+                        toast.error(error, {
+                          duration: 3000,
+                          cancel: {
+                            label: "cancel",
+                          },
+                        });
+                      })
+                  }
+                >
+                  <button type="submit">Active</button>
+                </form>
+              ) : (
+                <form
+                  action={() =>
+                    UpdateSellerStatus(seller._id, "pending")
+                      .then((res) =>
+                        toast.success(res.message, {
+                          duration: 3000,
+                          cancel: {
+                            label: "cancel",
+                          },
+                        })
+                      )
+                      .catch((error) => {
+                        toast.error(error, {
+                          duration: 3000,
+                          cancel: {
+                            label: "cancel",
+                          },
+                        });
+                      })
+                  }
+                >
+                  <button type="submit">Pending</button>
+                </form>
+              )}
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <form action={deleteSeller}>
+              <form
+                action={() =>
+                  deleteSelleraction(seller._id)
+                    .then((res) =>
+                      toast.success(res.message, {
+                        duration: 3000,
+                        cancel: {
+                          label: "cancel",
+                        },
+                      })
+                    )
+                    .catch((error) => {
+                      toast.error(error, {
+                        duration: 3000,
+                        cancel: {
+                          label: "cancel",
+                        },
+                      });
+                    })
+                }
+              >
                 <button type="submit">Delete seller</button>
               </form>
             </DropdownMenuItem>
@@ -282,12 +314,15 @@ export function SellerTable({ data }) {
 
   return (
     <div className="w-full">
+      <h3 className="text-[12px] text-[#00456e]  font-semibold">
+        Total : {data.length}
+      </h3>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter by id..."
-          value={table.getColumn("_id")?.getFilterValue() ?? ""}
+          placeholder="Filter by email..."
+          value={table.getColumn("email")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("_id")?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

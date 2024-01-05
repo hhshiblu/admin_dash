@@ -12,26 +12,26 @@ export const deleteSelleraction = async (id) => {
 
     if (result.acknowledged == true) {
       revalidatePath("/admin-dashboard/all_sellers");
-      return (message = "User deleted successfully");
+      return { message: "User deleted successfully" };
     }
   } catch (error) {
-    return error.message;
+    return { error: error.message };
   }
 };
 export const UpdateSellerStatus = async (id, status) => {
   const db = await connectToDB();
   const collection = db.collection("shops");
   try {
-    const result = await collection.findOneAndUpdate(
+    await collection.findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: { status: status } }
     );
-
-    if (result) {
-      revalidatePath("/admin-dashboard/all_sellers");
-      return { message: "success" };
-    }
+    revalidatePath("/admin-dashboard/all_sellers");
+    return {
+      success: true,
+      message: "status updated successfully",
+    };
   } catch (error) {
-    return error.message;
+    return { error: error.message };
   }
 };

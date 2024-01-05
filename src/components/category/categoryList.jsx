@@ -17,6 +17,7 @@ import {
 import { RxCross1 } from "react-icons/rx";
 
 import AddCategory from "./addCategory";
+import { toast } from "sonner";
 function CategoryList({ data }) {
   const [confirm, setConfirm] = useState(false);
   const [checked, setChecked] = useState([]);
@@ -89,10 +90,23 @@ function CategoryList({ data }) {
   );
   const handleDelete = async () => {
     try {
-      await deleteCategories();
-      setDeleteCategoryModal(false);
+      await deleteCategories().then((res) => {
+        toast.success(res.message, {
+          duration: 3000,
+          cancel: {
+            label: "cancel",
+          },
+        });
+
+        setDeleteCategoryModal(false);
+      });
     } catch (error) {
-      console.error("Error deleting categories:", error);
+      toast.error(res.error, {
+        duration: 3000,
+        cancel: {
+          label: "cancel",
+        },
+      });
     }
   };
   const updateCategory = () => {
@@ -129,7 +143,27 @@ function CategoryList({ data }) {
       form.append("name", name);
     });
 
-    await Updatecate({ _id, name }).then(() => setUpdateCategoryModal(false));
+    await Updatecate({ _id, name })
+      .then((res) => {
+        if (res.success == true) {
+          toast.success(res.message, {
+            duration: 3000,
+            cancel: {
+              label: "cancel",
+            },
+          });
+          setUpdateCategoryModal(false);
+        }
+      })
+      .catch((err) => {
+        toast.error(error, {
+          duration: 3000,
+          cancel: {
+            label: "cancel",
+          },
+        });
+        setUpdateCategoryModal(false);
+      });
   };
   return (
     <>
@@ -242,7 +276,7 @@ function CategoryList({ data }) {
       <div>
         {updateCategoryModal && (
           <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
-            <div className="w-[90%] 800px:w-[60%] min-h-[20vh] bg-white rounded shadow p-5">
+            <div className="w-[85%] md:w-[50%] min-h-[20vh] bg-white rounded shadow p-5">
               <div className="w-full flex justify-end cursor-pointer">
                 <RxCross1
                   size={25}
@@ -269,26 +303,6 @@ function CategoryList({ data }) {
                         )
                       }
                     />
-
-                    <select
-                      className="form-control"
-                      value={item.parentId}
-                      onChange={(e) =>
-                        handleCategoryInput(
-                          "parentId",
-                          e.target.value,
-                          index,
-                          "expanded"
-                        )
-                      }
-                    >
-                      <option>select category</option>
-                      {data.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 ))}
               <h5 className="font-semibold ">Checked for delete : </h5>
@@ -306,27 +320,8 @@ function CategoryList({ data }) {
                           "checked"
                         )
                       }
+                      className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
-
-                    <select
-                      className="form-control"
-                      value={item.parentId}
-                      onChange={(e) =>
-                        handleCategoryInput(
-                          "parentId",
-                          e.target.value,
-                          index,
-                          "checked"
-                        )
-                      }
-                    >
-                      <option>select category</option>
-                      {data.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 ))}
 

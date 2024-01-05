@@ -12,12 +12,19 @@ const getSellers = async () => {
 
     return sellers;
   } catch (error) {
-    return error.message;
+    return { error: error.message };
   }
 };
 export const dynamic = "force-dynamic";
 async function page() {
-  const sellers = await getSellers();
+  const sellers = await getSellers().catch((error) => {
+    toast.error(error, {
+      duration: 3000,
+      cancel: {
+        label: "cancel",
+      },
+    });
+  });
 
   return <SellerTable data={sellers} />;
 }

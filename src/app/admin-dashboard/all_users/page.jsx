@@ -1,7 +1,7 @@
 import { UserTable } from "@/components/user/userTable";
 import { getUsers } from "@/serverAction/user";
 export const dynamic = "force-dynamic";
-async function page() {
+async function Page() {
   const users = await getUsers();
   return (
     <div>
@@ -10,4 +10,4 @@ async function page() {
   );
 }
 
-export default page;
+export default Page;

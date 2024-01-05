@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { deleteUseraction } from "@/serverAction/user";
+import { toast } from "sonner";
 
 const hello = (id) => {
   //  <Helo/>
@@ -187,7 +188,6 @@ export const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const user = row.original;
-      const deletUser = deleteUseraction.bind(null, user._id);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -209,20 +209,28 @@ export const columns = [
             </DropdownMenuItem>
             <DropdownMenuItem>
               <form
-                // onSubmit={(e) => {
-                //   e.preventDefault();
-                //   handleDelete();
-                // }}
-                action={deletUser}
+                action={() =>
+                  deleteUseraction(user._id)
+                    .then((res) =>
+                      toast.success(res.message, {
+                        duration: 3000,
+                        cancel: {
+                          label: "cancel",
+                        },
+                      })
+                    )
+                    .catch((error) => {
+                      toast.error(error, {
+                        duration: 3000,
+                        cancel: {
+                          label: "cancel",
+                        },
+                      });
+                    })
+                }
               >
-                <button
-                  type="submit"
-                  // className="bg-[#cf3232] text-white px-3 rounded-md text-center"
-                >
-                  DeleteUser
-                </button>
+                <button type="submit">DeleteUser</button>
               </form>
-              {/* <Link href={`/product-details/${user._id}`}>details</Link> */}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -258,6 +266,9 @@ export function UserTable({ data }) {
 
   return (
     <div className="w-full">
+      <h3 className="text-[12px] text-[#00456e]  font-semibold">
+        Total : {data.length}
+      </h3>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter by id..."

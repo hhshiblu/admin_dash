@@ -25,9 +25,9 @@ export const deleteUseraction = async (id) => {
 
     if (result.acknowledged == true) {
       revalidatePath("/admin-dashboard/all_users");
-      return (message = "User deleted successfully");
+      return { message: "User deleted successfully" };
     }
   } catch (error) {
-    return error.message;
+    return { error: error.message };
   }
 };

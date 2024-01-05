@@ -2,12 +2,11 @@ import { RxCross1 } from "react-icons/rx";
 
 import { addCategory } from "@/serverAction/category";
 import SubmitButton from "./submitButton";
+import { toast } from "sonner";
 
 function AddCategory({ data, setConfirm }) {
   return (
     <div>
-
-
       <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
         <div className="w-[90%] md:w-[60%] min-h-[20vh] bg-white rounded shadow p-5">
           <div className="w-full flex justify-end cursor-pointer">
@@ -19,7 +18,25 @@ function AddCategory({ data, setConfirm }) {
 
           <form
             action={async (formData) => {
-              await addCategory(formData).then(() => setConfirm(false));
+              await addCategory(formData).then((res) => {
+                if (res.success) {
+                  toast.success(res.message, {
+                    duration: 3000,
+                    cancel: {
+                      label: "cancel",
+                    },
+                  });
+                  setConfirm(false);
+                }
+                if (res.error) {
+                  toast.error(res.error, {
+                    duration: 3000,
+                    cancel: {
+                      label: "cancel",
+                    },
+                  });
+                }
+              });
             }}
             encType="multipart/form-data"
           >
@@ -32,7 +49,6 @@ function AddCategory({ data, setConfirm }) {
                   type="text"
                   name="name"
                   placeholder={`Category Name`}
-                  required
                   className="my-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>

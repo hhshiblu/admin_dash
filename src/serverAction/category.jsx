@@ -47,13 +47,15 @@ export const deleteCate = async (ids) => {
     const collection = db.collection("categories");
 
     const objectIdArray = ids.map((id) => ({ _id: new ObjectId(id._id) }));
-    await collection.deleteMany({
+    const res = await collection.deleteMany({
       $or: objectIdArray,
     });
-    revalidatePath("/admin-dashboard/category");
-    return {
-      success: true,
-    };
+    if (res.acknowledged == true) {
+      revalidatePath("/admin-dashboard/category");
+      return {
+        message: "category deleted successfully",
+      };
+    }
   } catch (error) {
     return {
       success: false,
@@ -74,6 +76,12 @@ export const addCategory = async (FormData) => {
     const name = FormData.get("name");
     const parentId = FormData.get("parentId");
 
+    if (!name) {
+      return {
+        error: "name field is required",
+      };
+    }
+
     const categoryObj = {
       name: name,
       slug: `${slugify(name)}-${shortid.generate()}`,
@@ -83,13 +91,17 @@ export const addCategory = async (FormData) => {
     } else {
       categoryObj.parentId = null;
     }
-    console.log(categoryObj);
+
     const cate = await collection.insertOne(categoryObj);
     if (cate.acknowledged == true) {
       revalidatePath("/admin-dashboard/category");
+      return {
+        success: true,
+        message: "category added successfully",
+      };
     }
   } catch (error) {
-    return error.message;
+    return { error: error.message };
   }
 };
 
@@ -101,9 +113,12 @@ export const Updatecate = async ({ _id, name }) => {
       { _id: new ObjectId(_id) },
       { $set: { name } }
     );
-
     revalidatePath("/admin-dashboard/categories");
+    return {
+      success: true,
+      message: "Updated category successfully",
+    };
   } catch (error) {
-    return error.message;
+    return { error: error.message };
   }
 };

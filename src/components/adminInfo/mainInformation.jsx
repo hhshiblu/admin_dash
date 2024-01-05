@@ -3,7 +3,7 @@ import React from "react";
 import { AiOutlineMoneyCollect } from "react-icons/ai";
 import { MdBorderClear } from "react-icons/md";
 
-function MainInformation() {
+function MainInformation({ info }) {
   return (
     <div>
       <div className="w-full flex flex-wrap mx-auto gap-4">
@@ -21,7 +21,7 @@ function MainInformation() {
             </h3>
           </div>
           <h5 className="pt-2 pl-[36px] text-white text-[22px] font-[500]">
-            9000
+            {info.totalOrder_ByStatus.pending.totalPrice}
           </h5>
           <Link href="/seller_dashboard/withdraw-money">
             <h5 className="pt-4 pl-[2] text-white">Withdraw Money</h5>
@@ -36,8 +36,7 @@ function MainInformation() {
             </h3>
           </div>
           <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-            {/* {orders && orders.length} */}
-            80
+            {info.totalOrders}
           </h5>
           <Link href="/seller_DashBoard/all-orders">
             <h5 className="pt-4 pl-2 ">View Orders</h5>
@@ -55,7 +54,9 @@ function MainInformation() {
               All Products
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">7</h5>
+          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+            {info.totalProducts}
+          </h5>
           <Link href="/seller_dashboard/all-Products">
             <h5 className="pt-4 pl-2 ">View Products</h5>
           </Link>
