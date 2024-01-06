@@ -48,18 +48,18 @@ function ProductForm({ categories }) {
   });
 
   const handleImageChange = (e) => {
-    const files = e.target.files;
-    const newFiles = [...files].filter((file) => {
-      if (file.size < 1024 * 1024 && file.type.startsWith("image/")) {
-        return file;
-      }
-    });
-    setImages((prev) => [...newFiles, ...prev]);
+    const files = e.target.files[0];
+    // const newFiles = [...files].filter((file) => {
+    //   if (file.size < 1024 * 1024 && file.type.startsWith("image/")) {
+    //     return file;
+    //   }
+    // });
+    setImages((prev) => [files, ...prev]);
   };
 
   async function handelDeleteFile(index) {
-    const newFiles = images.filter((_, i) => i !== index);
-    setImages(newFiles);
+    // const newFiles = images.filter((_, i) => i !== index);
+    // setImages(newFiles);
   }
 
   const handelChange = (e) => {

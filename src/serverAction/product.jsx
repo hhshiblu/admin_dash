@@ -1,7 +1,7 @@
 "use server";
 
 import connectToDB from "@/lib/connect";
-// import { savePhotoLocal } from "@/lib/imageUpload";
+import { savePhotoLocal } from "@/lib/imageUpload";
 import fs from "fs/promises";
 
 import { ObjectId } from "mongodb";
@@ -79,8 +79,9 @@ export const CreateProducts = async (formData) => {
     const db = await connectToDB();
     const collection = db.collection("products");
     const images = formData.getAll("images");
-
+    console.log(images);
     const newFiles = await savePhotoLocal(images);
+    console.log(newFiles);
     const name = formData.get("name");
     const description = formData.get("description");
     const category = formData.get("category");
@@ -112,7 +113,7 @@ export const CreateProducts = async (formData) => {
       createdAt: new Date(),
     };
     const res = await collection.insertOne(product);
-    console.log(res);
+    console.log(product);
     revalidatePath("/");
     return {
       success: true,
