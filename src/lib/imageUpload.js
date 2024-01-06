@@ -52,3 +52,13 @@ export const deleteProduct = async (id) => {
     console.log(error);
   }
 };
+
+export const droduct = async (id) => {
+  try {
+    const res = await cloudinary.uploader.destroy(id);
+    revalidatePath("/admin-dashboard/create-product");
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
