@@ -11,7 +11,6 @@ import { getOrders } from "@/serverAction/order/order";
 
 const DashboardHero = async () => {
   const orderInfo = await admininfo();
-  const orders = await getOrders();
 
   return (
     <div className="w-full md:w-[calc(100%-300px)] ml-auto p-8  h-[90vh] overflow-y-scroll overflow-hidden">
@@ -20,6 +19,9 @@ const DashboardHero = async () => {
         <MainInformation info={orderInfo} />
       </Suspense>
       <br />
+      <Link href="/admin-dashboard/product-details/659929426fe01f0db116910c">
+        allah borosha
+      </Link>
       <h3 className="text-[22px] font-Poppins pb-2">Latest Orders</h3>
       <div className="w-full min-h-[49vh] bg-white rounded px-2">
         <Suspense fallback={<p>Loading...</p>}>

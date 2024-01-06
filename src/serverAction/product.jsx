@@ -113,7 +113,7 @@ export const CreateProducts = async (formData) => {
       createdAt: new Date(),
     };
     const res = await collection.insertOne(product);
-    console.log(product);
+    console.log(res);
     revalidatePath("/");
     return {
       success: true,
