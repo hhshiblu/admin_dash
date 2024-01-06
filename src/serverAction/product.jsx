@@ -1,7 +1,7 @@
 "use server";
 
 import connectToDB from "@/lib/connect";
-import { savePhotoLocal } from "@/lib/imageUpload";
+// import { savePhotoLocal } from "@/lib/imageUpload";
 import fs from "fs/promises";
 
 import { ObjectId } from "mongodb";
@@ -119,24 +119,24 @@ export const CreateProducts = async (formData) => {
       message: "Product created successfully",
     };
   } catch (error) {
-    if (newFiles && newFiles.length > 0) {
-      await deleteUploadedImages(newFiles);
-    }
+    // if (newFiles && newFiles.length > 0) {
+    //   await deleteUploadedImages(newFiles);
+    // }
 
     return { message: error.message };
   }
 };
 
-const deleteUploadedImages = async (files) => {
-  const promises = files.map(async (file) => {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "upload",
-      file.filename
-    );
-    await fs.unlink(filePath);
-  });
+// const deleteUploadedImages = async (files) => {
+//   const promises = files.map(async (file) => {
+//     const filePath = path.join(
+//       process.cwd(),
+//       "public",
+//       "upload",
+//       file.filename
+//     );
+//     await fs.unlink(filePath);
+//   });
 
-  await Promise.all(promises);
-};
+//   await Promise.all(promises);
+// };
