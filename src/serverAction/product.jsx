@@ -79,7 +79,8 @@ export const CreateProducts = async (formData) => {
     const db = await connectToDB();
     const collection = db.collection("products");
     const images = formData.getAll("images");
-    const newFiles = await savePhotoLocal(images);
+
+    // const newFiles = await savePhotoLocal(images);
     const name = formData.get("name");
     const description = formData.get("description");
     const category = formData.get("category");
@@ -95,7 +96,7 @@ export const CreateProducts = async (formData) => {
     const product = {
       name,
       description,
-      images: newFiles,
+      // images: newFiles,
       category,
       subCategory,
       tags,
