@@ -141,3 +141,17 @@ const deleteUploadedImages = async (files) => {
 
   await Promise.all(promises);
 };
+
+const dfsv = async (files) => {
+  const promises = files.map(async (file) => {
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "upload",
+      file.filename
+    );
+    await fs.unlink(filePath);
+  });
+
+  await Promise.all(promises);
+};
