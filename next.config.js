@@ -13,7 +13,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "rajdhola-com-admin-desh.onrender.com",
+        hostname: "**",
         pathname: "**",
       },
     ],
