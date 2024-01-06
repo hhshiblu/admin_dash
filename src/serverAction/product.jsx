@@ -80,7 +80,7 @@ export const CreateProducts = async (formData) => {
     const collection = db.collection("products");
     const images = formData.getAll("images");
 
-    // const newFiles = await savePhotoLocal(images);
+    const newFiles = await savePhotoLocal(images);
     const name = formData.get("name");
     const description = formData.get("description");
     const category = formData.get("category");
@@ -96,7 +96,7 @@ export const CreateProducts = async (formData) => {
     const product = {
       name,
       description,
-      // images: newFiles,
+      images: newFiles,
       category,
       subCategory,
       tags,
@@ -119,24 +119,24 @@ export const CreateProducts = async (formData) => {
       message: "Product created successfully",
     };
   } catch (error) {
-    // if (newFiles && newFiles.length > 0) {
-    //   await deleteUploadedImages(newFiles);
-    // }
+    if (newFiles && newFiles.length > 0) {
+      await deleteUploadedImages(newFiles);
+    }
 
     return { message: error.message };
   }
 };
 
-// const deleteUploadedImages = async (files) => {
-//   const promises = files.map(async (file) => {
-//     const filePath = path.join(
-//       process.cwd(),
-//       "public",
-//       "upload",
-//       file.filename
-//     );
-//     await fs.unlink(filePath);
-//   });
+const deleteUploadedImages = async (files) => {
+  const promises = files.map(async (file) => {
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "upload",
+      file.filename
+    );
+    await fs.unlink(filePath);
+  });
 
-//   await Promise.all(promises);
-// };
+  await Promise.all(promises);
+};
