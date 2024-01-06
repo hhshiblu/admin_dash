@@ -52,7 +52,8 @@ export const getProduct = async (id) => {
     const db = await connectToDB();
     const collection = db.collection("products");
 
-    const product = await collection.findOne({ _id: ObjectId(id) });
+    const product = await collection.findOne({ _id: new ObjectId(id) });
+
     return product;
   } catch (error) {
     return error.message;
