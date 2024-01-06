@@ -10,7 +10,7 @@ async function page({ params }) {
     <div>
       {product && (
         <Image
-          src={`https://rajdhola-com-admin-desh.onrender.com/upload/${product.images[0].filename}`}
+          src={`https://rajdhola-com-admin-desh.onrender.com/${product.images[0].filename}`}
           width={100}
           height={100}
           alt="hello world"

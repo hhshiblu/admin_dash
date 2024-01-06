@@ -14,15 +14,15 @@ export async function savePhotoLocal(formData) {
     const originalFilename = file.name;
     const ext = path.extname(originalFilename).toLowerCase();
     const uniqueFilename = `${uuidv4()}_${new Date().getTime()}${ext}`;
-    const uploadDir = path.join(
-      process.cwd(),
-      "public",
-      "upload",
-      uniqueFilename
-    );
+    const uploadDir = path.join(process.cwd(), "public", uniqueFilename);
 
-    const res = await fs.writeFile(uploadDir, buffer);
-    console.log("fs", res);
+    try {
+      await fs.writeFile(uploadDir, buffer);
+      console.log("File saved successfully:", uniqueFilename);
+    } catch (error) {
+      console.error("Error saving file:", error);
+      throw error; // Rethrow the error to handle it at a higher level if needed
+    }
 
     return { filename: uniqueFilename };
   });
