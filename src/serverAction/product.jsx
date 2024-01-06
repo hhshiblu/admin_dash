@@ -80,9 +80,9 @@ export const CreateProducts = async (formData) => {
     const db = await connectToDB();
     const collection = db.collection("products");
     const images = formData.getAll("images");
-    console.log(images);
+
     const newFiles = await savePhotoLocal(images);
-    console.log(newFiles);
+
     const name = formData.get("name");
     const description = formData.get("description");
     const category = formData.get("category");

@@ -21,7 +21,8 @@ export async function savePhotoLocal(formData) {
       uniqueFilename
     );
 
-    await fs.writeFile(uploadDir, buffer);
+    const res = await fs.writeFile(uploadDir, buffer);
+    console.log("fs", res);
 
     return { filename: uniqueFilename };
   });
