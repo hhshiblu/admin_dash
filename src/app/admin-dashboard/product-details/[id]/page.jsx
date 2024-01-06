@@ -4,16 +4,18 @@ import React from "react";
 
 async function page({ params }) {
   const product = await getProduct(params.id);
+  console.log(product.images);
 
   return (
     <div>
-      {product &&
-        product.images.map((image, id) => (
-          <Image
-            key={id}
-            src={`https://rajdhola-com-admin-desh.onrender.com/upload/${image.filename}`}
-          />
-        ))}
+      {product && (
+        <Image
+          src={`https://rajdhola-com-admin-desh.onrender.com/upload/${product.images[0].filename}`}
+          width={100}
+          height={100}
+          alt="hello world"
+        />
+      )}
     </div>
   );
 }
