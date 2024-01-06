@@ -10,7 +10,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: ["https://rajdhola-com-admin-desh.onrender.com/"],
+    domains: ["https://rajdhola-com-admin-desh.onrender.com/"],
   },
 };
 
