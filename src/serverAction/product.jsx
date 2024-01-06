@@ -113,6 +113,10 @@ export const CreateProducts = async (formData) => {
     const res = await collection.insertOne(product);
     console.log(res);
     revalidatePath("/");
+    return {
+      success: true,
+      message: "Product created successfully",
+    };
   } catch (error) {
     if (newFiles && newFiles.length > 0) {
       await deleteUploadedImages(newFiles);

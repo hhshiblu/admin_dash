@@ -7,6 +7,7 @@ import { CreateProducts } from "@/serverAction/product";
 import Photocard from "./photocard";
 import SubmitButton from "@/components/products/buttonsubmit";
 import Image from "next/image";
+import { toast } from "sonner";
 
 const colorsData = ["Red", "White", "Green", "blue", "yellow"];
 const sizesData = ["22", "23", "29", "42", "s", "m", "l", "xl", "xxl"];
@@ -94,7 +95,9 @@ function ProductForm({ categories }) {
     });
 
     newForm.append("sellerId", sellerId);
-    let res = await CreateProducts(newForm);
+    await CreateProducts(newForm)
+      .then((res) => toast.success(res.message))
+      .catch((err) => toast.error(err));
   };
 
   return (

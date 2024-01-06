@@ -7,9 +7,11 @@ import Link from "next/link";
 import MainInformation from "@/components/adminInfo/mainInformation";
 import Orders from "@/components/orders/orders";
 import { admininfo } from "@/serverAction/admininfo";
+import { getOrders } from "@/serverAction/order/order";
 
 const DashboardHero = async () => {
   const orderInfo = await admininfo();
+  const orders = await getOrders();
 
   return (
     <div className="w-full md:w-[calc(100%-300px)] ml-auto p-8  h-[90vh] overflow-y-scroll overflow-hidden">

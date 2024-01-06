@@ -194,7 +194,7 @@ export function DataTableDemo({ data }) {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full p-2">
       <h3 className="text-[12px] text-[#00456e]  font-semibold">
         Total : {data.length}
       </h3>
