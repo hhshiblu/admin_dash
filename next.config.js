@@ -8,10 +8,16 @@
 // module.exports = nextConfig;
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   images: {
-    domains: ["https://rajdhola-com-admin-desh.onrender.com/"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "rajdhola-com-admin-desh.onrender.com",
+        pathname: "**",
+      },
+    ],
   },
 };
 
-module.exports = nextConfig;
+// module.exports = nextConfig;
