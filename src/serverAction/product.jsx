@@ -1,7 +1,7 @@
 "use server";
 
 import connectToDB from "@/lib/connect";
-import { savePhotoLocal } from "@/lib/imageUpload";
+
 import fs from "fs/promises";
 
 import { ObjectId } from "mongodb";
@@ -59,7 +59,7 @@ export const getProduct = async (id) => {
     return error.message;
   }
 };
-export const deleteProductAction = async (id, public_id) => {
+export const deleteProductAction = async (id) => {
   try {
     const db = await connectToDB();
     const collection = db.collection("products");
@@ -68,7 +68,7 @@ export const deleteProductAction = async (id, public_id) => {
 
     if (result.acknowledged == true) {
       revalidatePath("/admin-dashboard/all-products");
-      return (message = "User deleted successfully");
+      return (message = "Products deleted successfully");
     }
   } catch (error) {
     return error.message;
@@ -80,8 +80,8 @@ export const CreateProducts = async (formData) => {
     const db = await connectToDB();
     const collection = db.collection("products");
     const images = formData.getAll("images");
-
-    const newFiles = await savePhotoLocal(images);
+    const photos = await uploadFileToS3(images);
+    console.log(photos);
 
     const name = formData.get("name");
     const description = formData.get("description");
@@ -98,7 +98,7 @@ export const CreateProducts = async (formData) => {
     const product = {
       name,
       description,
-      images: newFiles,
+      images: photos,
       category,
       subCategory,
       tags,
@@ -113,18 +113,17 @@ export const CreateProducts = async (formData) => {
       reviews: [],
       createdAt: new Date(),
     };
-    const res = await collection.insertOne(product);
-    console.log(res);
-    revalidatePath("/");
+
+    // const res = await collection.insertOne(product);
+    // console.log(res);
+    // revalidatePath("/");
     return {
       success: true,
       message: "Product created successfully",
     };
   } catch (error) {
-    if (newFiles && newFiles.length > 0) {
-      await deleteUploadedImages(newFiles);
-    }
-
+    console.log(error);
+    console.log(error.message);
     return { message: error.message };
   }
 };

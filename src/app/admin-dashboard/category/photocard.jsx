@@ -13,7 +13,13 @@ function Photocard({ url, onClick }) {
         className="h-[60px] w-[60px] object-cover m-2 mt-4 rounded-sm"
       />
       <div className=" absolute top-2 right-2 cursor-pointer text-white">
-        <h2 onClick={onClick}>h</h2>
+        <h2
+          onClick={onClick}
+          className="bg-black rounded-lg w-5 h-5 text-white flex justify-center items-center "
+        >
+          {" "}
+          ✖{" "}
+        </h2>
       </div>
     </div>
   );

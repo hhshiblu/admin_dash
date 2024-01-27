@@ -1,7 +1,4 @@
 import React, { Suspense } from "react";
-import { AiOutlineMoneyCollect } from "react-icons/ai";
-
-import { MdBorderClear } from "react-icons/md";
 
 import Link from "next/link";
 import MainInformation from "@/components/adminInfo/mainInformation";
@@ -13,7 +10,7 @@ const DashboardHero = async () => {
   const orderInfo = await admininfo();
 
   return (
-    <div className="w-full md:w-[calc(100%-300px)] ml-auto p-8  h-[90vh] overflow-y-scroll overflow-hidden">
+    <div className="w-full  ml-auto   h-[87vh] overflow-y-scroll overflow-hidden">
       <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
       <Suspense fallback={true}>
         <MainInformation info={orderInfo} />

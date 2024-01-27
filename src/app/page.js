@@ -6,6 +6,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -26,13 +27,23 @@ export default function Home() {
       <div>
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className=" sm:mx-auto sm:w-full sm:max-w-md ">
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <Image
+              src="/rd_logo.svg"
+              alt="rajdhola logo"
+              width={100}
+              height={100}
+              className="w-[150px] ml-32 pb-2"
+            />
+            <hr />
+            <hr />
+
+            <h2 className="pt-2 text-center text-3xl font-extrabold text-gray-900">
               Login to for admin account
             </h2>
           </div>
 
           <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div className="bg-white py-8 px-4 shadow-lg shadow-[#00453e] sm:rounded-lg sm:px-10">
               <form className="space-y-6" onSubmit={hendelSubmit}>
                 <div>
                   <label

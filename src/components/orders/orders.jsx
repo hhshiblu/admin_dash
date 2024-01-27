@@ -4,8 +4,6 @@ import { DataTableDemo } from "../demo";
 async function Orders() {
   const orders = await getOrders();
 
-  // await createOrder(data);
-
   return (
     <div>
       <DataTableDemo data={orders} />

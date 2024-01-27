@@ -132,7 +132,7 @@ export const createOrder = async (data) => {
         shippingAddress: "pubadhala",
         paymentInfo: "cash on ",
         products: productsForSeller,
-        createAt: new Date(),
+        createdAt: new Date(),
       });
     }
   }
@@ -142,7 +142,7 @@ export const createOrder = async (data) => {
     totalPrice,
     delivery_status: "pending",
     shippingInfo: shippingAddress,
-    createAt: new Date(),
+    createdAt: new Date(),
   });
   await SellerOrder.insertMany(orderArray);
 };
