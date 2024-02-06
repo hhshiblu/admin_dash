@@ -4,7 +4,7 @@ import connectToDB from "@/lib/connect";
 const getSellers = async () => {
   try {
     const db = await connectToDB();
-    const collection = db.collection("shops");
+    const collection = db.collection("sellers");
 
     const seller = await collection.find({}).toArray();
 
