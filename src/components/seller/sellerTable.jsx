@@ -98,7 +98,7 @@ export const columns = [
   //   cell: ({ row }) => <div className="lowercase">{row.getValue("_id")}</div>,
   // },
   {
-    accessorKey: "name",
+    accessorKey: "shopName",
     header: ({ column }) => {
       return (
         <Button
@@ -112,7 +112,7 @@ export const columns = [
     },
     cell: ({ row }) => (
       <div className="capitalize ml-auto">
-        {row.getValue("name").slice(0, 16)}
+        {row.getValue("shopName").slice(0, 16)}
       </div>
     ),
   },

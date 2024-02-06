@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export const deleteSelleraction = async (id) => {
   const db = await connectToDB();
-  const collection = db.collection("shops");
+  const collection = db.collection("sellers");
   try {
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
 
@@ -20,7 +20,7 @@ export const deleteSelleraction = async (id) => {
 };
 export const UpdateSellerStatus = async (id, status) => {
   const db = await connectToDB();
-  const collection = db.collection("shops");
+  const collection = db.collection("sellers");
   try {
     await collection.findOneAndUpdate(
       { _id: new ObjectId(id) },
