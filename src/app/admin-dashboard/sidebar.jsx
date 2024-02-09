@@ -2,7 +2,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { MdBorderClear } from "react-icons/md";
 import { BiSolidCartDownload } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
 import { FaAlignLeft } from "react-icons/fa6";
@@ -104,12 +103,6 @@ const mainMenu = [
         label: "All Category",
         link: "/admin-dashboard/category",
       },
-      {
-        id: 22,
-        icon: "zp zp-circle",
-        label: "Create Category",
-        link: "/admin-dashboard/create-category",
-      },
     ],
   },
   {
@@ -119,58 +112,7 @@ const mainMenu = [
     link: "../../access-permission",
   },
 ];
-// const mainMenu = [
-//   {
-//     id: 1,
-//     icon: <MdBorderClear />,
-//     label: "DashBoard",
-//     link: "/seller_dashboard",
-//   },
-//   {
-//     id: 3,
-//     icon: "zp zp-credit-card",
-//     label: "Order",
-//     subMenuItems: [
-//       {
-//         id: 21,
-//         icon: "zp zp-circle",
-//         label: "All_orders",
-//         link: "/seller_dashboard/all-orders",
-//       },
-//       {
-//         id: 22,
-//         icon: "zp zp-circle",
-//         label: "Refund_Orders",
-//         link: "/seller_dashboard/refunds-order",
-//       },
-//     ],
-//   },
-//   {
-//     id: 4,
-//     icon: "zp zp-credit-card",
-//     label: "Products",
-//     subMenuItems: [
-//       {
-//         id: 21,
-//         icon: "zp zp-circle",
-//         label: "All_Product",
-//         link: "/seller_dashboard/all-products",
-//       },
-//       {
-//         id: 22,
-//         icon: "zp zp-circle",
-//         label: "Create_Product",
-//         link: "/seller_dashboard/create-product",
-//       },
-//     ],
-//   },
-//   {
-//     id: 6,
-//     icon: "zp zp-private-connectivity",
-//     label: "Withdraw",
-//     link: "/seller_dashboard/withdraw-money",
-//   },
-// ];
+
 function Sidebar({ children }) {
   const [sidebar, setSidebar] = useState(false);
   const [profile, setShowProfile] = useState(false);
@@ -212,12 +154,6 @@ function Sidebar({ children }) {
             className=" cursor-pointer h-9 w-9 rounded-full bg-white flex justify-center items-center overflow-hidden"
             onClick={() => setShowProfile(!profile)}
           >
-            {/* <Image
-              src="/vercel.svg"
-              height={100}
-              width={100}
-              alt="profile picture"
-            /> */}
             <Image
               src="/rd-logo-only.svg"
               alt="rajdhola"

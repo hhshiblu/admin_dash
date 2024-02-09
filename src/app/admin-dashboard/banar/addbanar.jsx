@@ -1,4 +1,5 @@
 "use client";
+import SubmitButton from "@/components/button/submitButton";
 import { createBanar } from "@/serverAction/home";
 import React, { useState } from "react";
 import { RxAvatar, RxCross1 } from "react-icons/rx";
@@ -18,7 +19,7 @@ function AddBanar({ setOpen }) {
       formData.append("file", avatar);
       formData.append("urlbanarproduct", banarLink);
       const res = await createBanar(formData);
-      console.log(res);
+
       if (res.error) {
         toast.error(res.error, {
           duration: 3000,
@@ -93,7 +94,7 @@ function AddBanar({ setOpen }) {
                 </span>
                 <label
                   htmlFor="file-input"
-                  className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                  className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
                 >
                   <span>Upload a file</span>
                   <input
@@ -107,7 +108,7 @@ function AddBanar({ setOpen }) {
               </div>
             </div>
             <div>
-              <button>submit</button>
+              <SubmitButton name="Create banar" type="Loading" />
             </div>
           </form>
         </div>

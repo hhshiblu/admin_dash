@@ -1,12 +1,17 @@
-import { RxCross1 } from "react-icons/rx";
+"use client";
+import { RxAvatar, RxCross1 } from "react-icons/rx";
 
 import { addCategory } from "@/serverAction/category";
-import SubmitButton from "./submitButton";
 import { toast } from "sonner";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import Photocard from "@/app/admin-dashboard/category/photocard";
+import { useState } from "react";
+import SubmitButton from "../button/submitButton";
 
 function AddCategory({ data, setConfirm }) {
+  const [avatar, setAvatar] = useState(null);
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+  };
   return (
     <div>
       <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
@@ -20,6 +25,7 @@ function AddCategory({ data, setConfirm }) {
 
           <form
             action={async (formData) => {
+              formData.append("file", avatar);
               await addCategory(formData).then((res) => {
                 if (res.success) {
                   toast.success(res.message, {
@@ -73,40 +79,41 @@ function AddCategory({ data, setConfirm }) {
               </div>
             </div>
             <br />
-            <div>
-              <label className="pb-2">
-                Upload Images <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="file"
-                name=""
-                id="upload"
-                className="hidden"
-                multiple
-                onChange={handleImageChange}
-              />
-              <div className="w-full flex items-center flex-wrap ">
-                <label htmlFor="upload" className="cursor-pointer">
-                  <AiOutlinePlusCircle
-                    size={30}
-                    className="mt-3"
-                    color="#555"
+            <div className="pb-4">
+              <label
+                htmlFor="avatar"
+                className="block text-sm font-medium text-gray-700"
+              ></label>
+              <div className="mt-2 flex items-center">
+                <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
+                  {avatar ? (
+                    <img
+                      src={URL.createObjectURL(avatar)}
+                      alt="avatar"
+                      className="h-full w-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <RxAvatar className="h-8 w-8" />
+                  )}
+                </span>
+                <label
+                  htmlFor="file-input"
+                  className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
+                >
+                  <span>Upload a file</span>
+                  <input
+                    type="file"
+                    name="avatar"
+                    id="file-input"
+                    onChange={handleFileInputChange}
+                    className="sr-only"
                   />
                 </label>
-                {images &&
-                  images.map((files, index) => (
-                    <Photocard
-                      key={index}
-                      url={URL.createObjectURL(files)}
-                      onClick={() => handelDeleteFile(index)}
-                    />
-                  ))}
               </div>
-              <br />
             </div>
             <br />
             <div>
-              <SubmitButton />
+              <SubmitButton name="Add category" type="Loading ..." />
             </div>
           </form>
         </div>

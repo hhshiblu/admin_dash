@@ -5,55 +5,75 @@ import { AiFillPlusSquare, AiTwotoneEdit } from "react-icons/ai";
 import { RxAvatar, RxCross1 } from "react-icons/rx";
 import { RiDeleteBin2Fill, RiDeleteBinLine } from "react-icons/ri";
 import AddBanar from "./addbanar";
+import Image from "next/image";
+import { toast } from "sonner";
+import { deleteBanners, updateBannerRoles } from "@/serverAction/home";
 
-function BanarInfo() {
+function BanarInfo({ banars }) {
   const [confirm, setConfirm] = useState(false);
   const [open, setOpen] = useState(false);
-  const banars = [];
-  const activeBanars = banars.filter((item) => item.role === 1);
 
   const [selectedBanars, setSelectedBanars] = useState([]);
 
   const deleteBanarHandler = async () => {
     try {
       for (const bannerId of selectedBanars) {
-        // dispatch(deleteBanar(bannerId));
+        const res = await deleteBanners(bannerId);
+        if (res.success == true) {
+          toast.success(res.message, {
+            duration: 3000,
+            cancel: {
+              label: "Cancel",
+            },
+          });
+        }
       }
-
-      // dispatch(getAllBanar());
     } catch (error) {
-      console.error("Error deleting banar:", error);
+      toast.error(error, {
+        duration: 3000,
+        cancel: {
+          label: "cancel",
+        },
+      });
     }
   };
 
-  //  cheak branch which is active
   const handleBanarCheck = (bannerId) => {
     const newSelectedBanars = [...selectedBanars];
 
     if (newSelectedBanars.includes(bannerId)) {
-      // The banner is already selected, so remove it from the list
       const index = newSelectedBanars.indexOf(bannerId);
       if (index !== -1) {
         newSelectedBanars.splice(index, 1);
       }
     } else {
-      // The banner is not selected, so add it to the list
       newSelectedBanars.push(bannerId);
     }
 
-    // Update the state with the new list of selected banners
     setSelectedBanars(newSelectedBanars);
   };
 
   const updateBannerRole = async () => {
     try {
       for (const bannerId of selectedBanars) {
+        const res = await updateBannerRoles(bannerId);
+        if (res.success == true) {
+          toast.success(res.message, {
+            duration: 3000,
+            cancel: {
+              label: "Cancel",
+            },
+          });
+        }
       }
       selectedBanars.length = 0;
-      // dispatch(getAllBanar());
     } catch (error) {
-      toast.error(error);
-      console.error("Error:", error);
+      toast.error(error, {
+        duration: 3000,
+        cancel: {
+          label: "cancel",
+        },
+      });
     }
   };
   return (
@@ -104,9 +124,11 @@ function BanarInfo() {
                     />
                   </div>
 
-                  <img
-                    src={`${backend_URL}upload/${item.avatar && item.avatar}`}
-                    alt=""
+                  <Image
+                    src={item?.image?.url}
+                    alt={item.url}
+                    width={500}
+                    height={500}
                     className="!w-full  h-[22vh] rounded-2xl border-gray-700 border-[2px]"
                   />
                 </div>
@@ -133,9 +155,11 @@ function BanarInfo() {
                     />
                   </div>
 
-                  <img
-                    src={`${backend_URL}upload/${item.avatar && item.avatar}`}
-                    alt=""
+                  <Image
+                    src={item?.image?.url}
+                    alt={item.url}
+                    width={500}
+                    height={500}
                     className="!w-full  h-[22vh] rounded-2xl border-gray-700 border-[2px]"
                   />
                 </div>
@@ -145,22 +169,23 @@ function BanarInfo() {
       <hr />
       {confirm && (
         <div className="w-full fixed top-0 left-0 z-[999] bg-[#00000039] flex items-center justify-center h-screen">
-          <div className="w-[90%] 800px:w-[40%] min-h-[20vh] bg-white rounded shadow p-5">
+          <div className="w-[90%] 800px:w-[40%]  bg-white rounded shadow p-5">
             <div className="w-full flex justify-end cursor-pointer">
               <RxCross1 size={25} onClick={() => setConfirm(false)} />
             </div>
             <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
               Are you sure you wanna delete this this banar?
             </h3>
+
             <div className="w-full flex items-center justify-center">
               <div
-                className={` text-white text-[18px] !h-[42px] mr-4`}
+                className={`  text-[18px] !h-[42px] mr-4`}
                 onClick={() => setConfirm(false)}
               >
                 cancel
               </div>
               <div
-                className={` text-white text-[18px] !h-[42px] ml-4`}
+                className={`  text-[18px] !h-[42px] ml-4`}
                 onClick={() => setConfirm(false) || deleteBanarHandler()}
               >
                 confirm

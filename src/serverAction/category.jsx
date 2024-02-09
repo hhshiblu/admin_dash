@@ -1,5 +1,6 @@
 "use server";
 import connectToDB from "@/lib/connect";
+import { uploadFileToS3 } from "@/lib/s3bucketUpload";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import shortid from "shortid";
@@ -72,7 +73,7 @@ export const addCategory = async (FormData) => {
   try {
     const db = await connectToDB();
     const collection = db.collection("categories");
-
+    const file = FormData.get("file");
     const name = FormData.get("name");
     const parentId = FormData.get("parentId");
 
@@ -81,7 +82,9 @@ export const addCategory = async (FormData) => {
         error: "name field is required",
       };
     }
-
+    if (file.size === 0) {
+      return { status: "error", message: "Please select a file." };
+    }
     const categoryObj = {
       name: name,
       slug: `${slugify(name)}-${shortid.generate()}`,
@@ -91,6 +94,9 @@ export const addCategory = async (FormData) => {
     } else {
       categoryObj.parentId = null;
     }
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const res = await uploadFileToS3(buffer, file.name);
+    categoryObj.image = res;
 
     const cate = await collection.insertOne(categoryObj);
     if (cate.acknowledged == true) {

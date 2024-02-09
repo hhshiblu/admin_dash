@@ -1,10 +1,12 @@
 import React from "react";
 import BanarInfo from "./banarinfo";
+import { getBanars } from "@/serverAction/home";
 
-function page() {
+async function page() {
+  const banars = await getBanars();
   return (
     <div>
-      <BanarInfo />
+      <BanarInfo banars={banars} />
     </div>
   );
 }
