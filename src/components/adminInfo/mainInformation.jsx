@@ -23,7 +23,7 @@ function MainInformation({ info }) {
             </h3>
           </div>
           <h5 className="pt-2 pl-[36px] text-white text-[22px] font-[500]">
-            {info.totalOrder_ByStatus.delivered.totalPrice}
+            {info?.totalOrder_ByStatus.delivered?.totalPrice}
           </h5>
           <Link href="/seller_dashboard/withdraw-money">
             <h5 className="pt-4 pl-[2] text-white">Withdraw Money</h5>
@@ -38,7 +38,7 @@ function MainInformation({ info }) {
             </h3>
           </div>
           <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-            {info.totalOrders}
+            {info?.totalOrders}
           </h5>
           <div className="flex items-center justify-between px-3">
             <Link href="/seller_DashBoard/all-orders">
@@ -66,7 +66,7 @@ function MainInformation({ info }) {
             </h3>
           </div>
           <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-            {info.totalProducts}
+            {info?.totalProducts}
           </h5>
           <Link href="/seller_dashboard/all-Products">
             <h5 className="pt-4 pl-2 ">View Products</h5>
@@ -81,7 +81,7 @@ function MainInformation({ info }) {
             </h3>
           </div>
           <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-            {info.totalOrders}
+            {info?.totalOrders}
           </h5>
           <Link href="/seller_DashBoard/all-orders">
             <h5 className="pt-4 pl-2 ">View Orders</h5>
@@ -102,11 +102,12 @@ function MainInformation({ info }) {
             </div>
 
             <h5 className="py-3 text-[15px] font-[500]">
-              Total products : {info.totalOrder_ByStatus.pending.totalProducts}
+              Total products :{" "}
+              {info?.totalOrder_ByStatus.pending?.totalProducts}
             </h5>
             <h2>
               {" "}
-              Total Price : {info.totalOrder_ByStatus.pending.totalPrice}
+              Total Price : {info?.totalOrder_ByStatus.pending?.totalPrice}
             </h2>
           </div>
           <div className=" ">
@@ -118,11 +119,12 @@ function MainInformation({ info }) {
             </div>
 
             <h5 className="py-3 text-[15px] font-[500]">
-              Total products : {info.totalOrder_ByStatus.pending.totalProducts}
+              Total products :{" "}
+              {info?.totalOrder_ByStatus.pending?.totalProducts}
             </h5>
             <h2>
               {" "}
-              Total Price : {info.totalOrder_ByStatus.pending.totalPrice}
+              Total Price : {info?.totalOrder_ByStatus.pending?.totalPrice}
             </h2>
           </div>
           <div className=" ">
@@ -134,11 +136,12 @@ function MainInformation({ info }) {
             </div>
 
             <h5 className="py-3 text-[15px] font-[500]">
-              Total products : {info.totalOrder_ByStatus.pending.totalProducts}
+              Total products :{" "}
+              {info?.totalOrder_ByStatus.pending?.totalProducts}
             </h5>
             <h2>
               {" "}
-              Total Price : {info.totalOrder_ByStatus.pending.totalPrice}
+              Total Price : {info?.totalOrder_ByStatus.pending?.totalPrice}
             </h2>
           </div>
           <div className=" ">
@@ -151,11 +154,11 @@ function MainInformation({ info }) {
 
             <h5 className="py-4 text-[15px] font-[500]">
               Total products :{" "}
-              {info.totalOrder_ByStatus.delivered.totalProducts}
+              {info.totalOrder_ByStatus.delivered?.totalProducts}
             </h5>
             <h2>
               {" "}
-              Total Price : {info.totalOrder_ByStatus.delivered.totalPrice}
+              Total Price : {info.totalOrder_ByStatus.delivered?.totalPrice}
             </h2>
           </div>
         </div>
@@ -174,11 +177,11 @@ function MainInformation({ info }) {
             </div>
 
             <h5 className="py-3 text-[15px] font-[500]">
-              Total products : {info.totalOrder_ByStatus.pending.totalProducts}
+              Total products : {info.totalOrder_ByStatus.pending?.totalProducts}
             </h5>
             <h2>
               {" "}
-              Total Price : {info.totalOrder_ByStatus.pending.totalPrice}
+              Total Price : {info.totalOrder_ByStatus.pending?.totalPrice}
             </h2>
           </div>
           <div className=" ">
@@ -191,11 +194,11 @@ function MainInformation({ info }) {
 
             <h5 className="py-4 text-[15px] font-[500]">
               Total products :{" "}
-              {info.totalOrder_ByStatus.delivered.totalProducts}
+              {info.totalOrder_ByStatus.delivered?.totalProducts}
             </h5>
             <h2>
               {" "}
-              Total Price : {info.totalOrder_ByStatus.delivered.totalPrice}
+              Total Price : {info.totalOrder_ByStatus.delivered?.totalPrice}
             </h2>
           </div>
         </div>

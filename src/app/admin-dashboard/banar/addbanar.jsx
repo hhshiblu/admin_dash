@@ -6,6 +6,9 @@ import { RxAvatar, RxCross1 } from "react-icons/rx";
 import { toast } from "sonner";
 
 function AddBanar({ setOpen }) {
+  const [selectedType, setSelectedType] = useState(null);
+
+  const typeOptions = ["big", "small"];
   const [avatar, setAvatar] = useState(null);
   const [banarLink, setBanarLink] = useState("");
   const handleFileInputChange = (e) => {
@@ -18,6 +21,7 @@ function AddBanar({ setOpen }) {
       const formData = new FormData();
       formData.append("file", avatar);
       formData.append("urlbanarproduct", banarLink);
+      formData.append("type", selectedType);
       const res = await createBanar(formData);
 
       if (res.error) {
@@ -75,6 +79,19 @@ function AddBanar({ setOpen }) {
               />
             </div>
             <br />
+            <div className="flex flex-col 600px:flex-row gap-1">
+              <select
+                value={selectedType}
+                onChange={(event) => setSelectedType(event.target.value)}
+              >
+                <option value="">Select Type</option>
+                {typeOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="pb-4">
               <label
                 htmlFor="avatar"

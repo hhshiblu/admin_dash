@@ -80,6 +80,7 @@ function BanarInfo({ banars }) {
     <div className=" w-full px-2 mt-4 overflow-y-scroll overflow-hidden h-[88vh]">
       <div className="flex  justify-around  pb-2">
         <h1 className="text-sm 800px:text-lg font-bold ">all banar</h1>
+
         <div className="flex gap-2 items-center">
           {selectedBanars.length > 0 && (
             <div className="flex gap-4 items-center ">
@@ -179,13 +180,13 @@ function BanarInfo({ banars }) {
 
             <div className="w-full flex items-center justify-center">
               <div
-                className={`  text-[18px] !h-[42px] mr-4`}
+                className={`  text-[18px] !h-[42px] mr-4 cursor-pointer bg-[#00453e] px-1 py-1 rounded-md`}
                 onClick={() => setConfirm(false)}
               >
                 cancel
               </div>
               <div
-                className={`  text-[18px] !h-[42px] ml-4`}
+                className={`text-[18px] !h-[42px] ml-4 cursor-pointer bg-[#00453e] px-1 py-1 rounded-md`}
                 onClick={() => setConfirm(false) || deleteBanarHandler()}
               >
                 confirm

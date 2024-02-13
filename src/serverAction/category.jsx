@@ -5,7 +5,7 @@ import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import shortid from "shortid";
 import slugify from "slugify";
-
+import { v4 as uuidv4 } from "uuid";
 function createCategories(categories, parentId = null) {
   const categoryList = [];
   let category;
@@ -20,6 +20,7 @@ function createCategories(categories, parentId = null) {
       _id: cate._id.toString(),
       name: cate.name,
       slug: cate.slug,
+      image: cate.image,
       parentId: cate.parentId,
       children: createCategories(categories, cate._id),
     });
@@ -37,6 +38,18 @@ export const getCategories = async () => {
 
     const categoryList = createCategories(category);
     return categoryList;
+  } catch (err) {
+    return err.message;
+  }
+};
+export const allCategories = async () => {
+  try {
+    const db = await connectToDB();
+    const collection = db.collection("categories");
+
+    const category = await collection.find({}).toArray();
+    const categories = JSON.parse(JSON.stringify(category));
+    return categories;
   } catch (err) {
     return err.message;
   }
@@ -85,26 +98,31 @@ export const addCategory = async (FormData) => {
     if (file.size === 0) {
       return { status: "error", message: "Please select a file." };
     }
-    const categoryObj = {
-      name: name,
-      slug: `${slugify(name)}-${shortid.generate()}`,
-    };
-    if (parentId !== "select category") {
-      categoryObj.parentId = parentId;
-    } else {
-      categoryObj.parentId = null;
-    }
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const res = await uploadFileToS3(buffer, file.name);
-    categoryObj.image = res;
 
-    const cate = await collection.insertOne(categoryObj);
-    if (cate.acknowledged == true) {
-      revalidatePath("/admin-dashboard/category");
-      return {
-        success: true,
-        message: "category added successfully",
+    const names = uuidv4();
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const res = await uploadFileToS3(buffer, names + file.name);
+    if (res.url) {
+      const categoryObj = {
+        name: name,
+        slug: `${slugify(name)}-${shortid.generate()}`,
+        image: res,
       };
+      if (parentId !== "select category") {
+        categoryObj.parentId = parentId;
+      } else {
+        categoryObj.parentId = null;
+      }
+      console.log(categoryObj);
+      const cate = await collection.insertOne(categoryObj);
+      console.log(cate);
+      if (cate.acknowledged == true) {
+        revalidatePath("/admin-dashboard/category");
+        return {
+          success: true,
+          message: "category added successfully",
+        };
+      }
     }
   } catch (error) {
     return { error: error.message };

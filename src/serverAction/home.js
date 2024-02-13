@@ -3,15 +3,16 @@ import connectToDB from "@/lib/connect";
 import { uploadFileToS3 } from "@/lib/s3bucketUpload";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
+import { Fragment } from "react";
 
 export const createBanar = async (FormData) => {
   try {
     const db = await connectToDB();
     const collection = db.collection("banars");
-
+    const type = FormData.get("type");
     const file = FormData.get("file");
     const url = FormData.get("urlbanarproduct");
-    if (!file || !url) {
+    if (!file || !url || !type) {
       return {
         error: "All fields are required",
       };
@@ -26,6 +27,7 @@ export const createBanar = async (FormData) => {
       const banar = await collection.insertOne({
         image: res,
         ProductUrl: url,
+        type: type,
         role: 0,
         createdAt: new Date(),
       });

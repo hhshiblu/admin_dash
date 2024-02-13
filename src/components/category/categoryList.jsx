@@ -18,7 +18,7 @@ import { RxCross1 } from "react-icons/rx";
 
 import AddCategory from "./addCategory";
 import { toast } from "sonner";
-function CategoryList({ data }) {
+function CategoryList({ data, allCate }) {
   const [confirm, setConfirm] = useState(false);
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
@@ -207,7 +207,9 @@ function CategoryList({ data }) {
         />
       </div>
       <div>
-        {confirm && <AddCategory data={data} setConfirm={setConfirm} />}
+        {confirm && (
+          <AddCategory data={data} setConfirm={setConfirm} allCate={allCate} />
+        )}
       </div>
 
       <div>

@@ -133,7 +133,7 @@ function Sidebar({ children }) {
           <div>
             <Link href="">
               <Image
-                src="/rd-dark-logo.svg"
+                src="/rajdhola_title_logo_white.svg"
                 alt="rajdhola"
                 width={100}
                 height={100}
@@ -155,7 +155,7 @@ function Sidebar({ children }) {
             onClick={() => setShowProfile(!profile)}
           >
             <Image
-              src="/rd-logo-only.svg"
+              src="/rd_icon_color.svg"
               alt="rajdhola"
               width={100}
               height={100}
@@ -164,8 +164,8 @@ function Sidebar({ children }) {
           </div>
         </div>
         <div
-          className=" overflow-hidden  fixed top-[8vh] right-0  shadow-lg rounded-md h-[12vh] w-[160px] flex flex-col px-4   duration-200"
-          style={{ height: profile ? "12vh" : "0px" }}
+          className=" overflow-hidden  fixed top-[8vh] right-0  shadow-lg rounded-md h-[14vh] w-[160px] flex flex-col px-4   duration-200 z-10"
+          style={{ height: profile ? "14vh" : "0px" }}
         >
           <div className="flex gap-2 pt-4 items-center">
             <RxAvatar size={21} />

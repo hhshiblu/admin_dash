@@ -4,6 +4,7 @@ import { getBanars } from "@/serverAction/home";
 
 async function page() {
   const banars = await getBanars();
+
   return (
     <div>
       <BanarInfo banars={banars} />

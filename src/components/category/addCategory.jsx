@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import SubmitButton from "../button/submitButton";
 
-function AddCategory({ data, setConfirm }) {
+function AddCategory({ data, setConfirm, allCate }) {
   const [avatar, setAvatar] = useState(null);
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -70,7 +70,7 @@ function AddCategory({ data, setConfirm }) {
                   name="parentId"
                 >
                   <option>select category</option>
-                  {data.map((option, i) => (
+                  {allCate?.map((option, i) => (
                     <option key={i} value={option._id}>
                       {option.name}
                     </option>
