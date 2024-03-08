@@ -17,6 +17,14 @@ function AddBanar({ setOpen }) {
   };
 
   const handleSubmit = async () => {
+    if (!avatar || !banarLink || !selectedType) {
+      toast.error("All filed are required", {
+        duration: 3000,
+        cancel: {
+          label: "cancel",
+        },
+      });
+    }
     try {
       const formData = new FormData();
       formData.append("file", avatar);

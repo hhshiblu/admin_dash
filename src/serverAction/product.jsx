@@ -81,7 +81,6 @@ export const CreateProducts = async (formData) => {
     const collection = db.collection("products");
     const images = formData.getAll("images");
     const photos = await uploadFileToS3(images);
-    console.log(photos);
 
     const name = formData.get("name");
     const description = formData.get("description");

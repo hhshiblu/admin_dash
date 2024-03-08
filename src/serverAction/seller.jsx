@@ -3,16 +3,21 @@
 import { ObjectId } from "mongodb";
 import connectToDB from "@/lib/connect";
 import { revalidatePath } from "next/cache";
+import { deleteFiles } from "@/lib/s3bucketUpload";
 
-export const deleteSelleraction = async (id) => {
+export const deleteSelleraction = async (seller) => {
   const db = await connectToDB();
   const collection = db.collection("sellers");
   try {
-    const result = await collection.deleteOne({ _id: new ObjectId(id) });
-
+    if (seller?.images) {
+      await deleteFiles(seller?.images?.objectkey);
+    }
+    const result = await collection.deleteOne({
+      _id: new ObjectId(seller._id),
+    });
     if (result.acknowledged == true) {
       revalidatePath("/admin-dashboard/all_sellers");
-      return { message: "User deleted successfully" };
+      return { message: "seller deleted successfully" };
     }
   } catch (error) {
     return { error: error.message };

@@ -3,8 +3,7 @@ import connectToDB from "@/lib/connect";
 import { uploadFileToS3 } from "@/lib/s3bucketUpload";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
-import { Fragment } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 export const createBanar = async (FormData) => {
   try {
     const db = await connectToDB();
@@ -22,10 +21,18 @@ export const createBanar = async (FormData) => {
       return { status: "error", message: "Please select a file." };
     }
     try {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const res = await uploadFileToS3(buffer, file.name);
+      let images = null;
+      const name = uuidv4();
+      try {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const res = await uploadFileToS3(buffer, name + file.name);
+        images = res;
+      } catch (error) {
+        return { error: "Something  wrong! Try Later" };
+      }
+
       const banar = await collection.insertOne({
-        image: res,
+        image: images,
         ProductUrl: url,
         type: type,
         role: 0,

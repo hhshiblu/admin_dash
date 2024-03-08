@@ -67,17 +67,15 @@ export async function uploadFileToS3(file, fileName) {
 }
 
 export async function deleteFiles(filesToDelete) {
-  for (const fileName of filesToDelete) {
-    const params = {
-      Bucket: process.env.NEXT_AWS_S3_BUCKET_NAME,
-      Key: fileName,
-    };
+  const params = {
+    Bucket: process.env.NEXT_AWS_S3_BUCKET_NAME,
+    Key: filesToDelete,
+  };
 
-    try {
-      const res = await s3Client.send(new DeleteObjectCommand(params));
-      return res;
-    } catch (err) {
-      console.error(`Error deleting file ${fileName}:`, err);
-    }
+  try {
+    const res = await s3Client.send(new DeleteObjectCommand(params));
+    return res;
+  } catch (err) {
+    console.error(`Error deleting file ${filesToDelete}:`, err);
   }
 }

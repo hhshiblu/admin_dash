@@ -3,7 +3,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "rajdhola.s3.amazonaws.com",
+        hostname: "newrajdhola.s3.amazonaws.com",
         port: "",
         pathname: "**",
       },

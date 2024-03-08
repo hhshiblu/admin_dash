@@ -9,10 +9,11 @@ export const getOrders = async () => {
     const collection = db.collection("adminorder");
 
     const orders = await collection.find({}).toArray();
-    const plainOrders = orders.map((order) => {
-      const { _id, orderId, totalPrice, createAt, delivery_status } = order;
 
-      const dateObject = new Date(createAt);
+    const plainOrders = orders.map((order) => {
+      const { _id, orderId, totalPrice, createdAt, delivery_status } = order;
+
+      const dateObject = new Date(createdAt);
       const formattedDate = `${dateObject.getDate()}/${
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()}`;

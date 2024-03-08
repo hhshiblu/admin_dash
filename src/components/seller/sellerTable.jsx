@@ -105,15 +105,13 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Shop Name
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize ml-auto">
-        {row.getValue("shopName").slice(0, 16)}
-      </div>
+      <div className="capitalize ml-auto">{row.getValue("shopName")}</div>
     ),
   },
   {
@@ -258,7 +256,7 @@ export const columns = [
             <DropdownMenuItem>
               <form
                 action={() =>
-                  deleteSelleraction(seller._id)
+                  deleteSelleraction(seller)
                     .then((res) =>
                       toast.success(res.message, {
                         duration: 3000,

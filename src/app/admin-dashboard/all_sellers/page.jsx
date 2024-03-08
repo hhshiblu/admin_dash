@@ -1,5 +1,6 @@
 import { SellerTable } from "@/components/seller/sellerTable";
 import connectToDB from "@/lib/connect";
+import { deleteFiles } from "@/lib/s3bucketUpload";
 
 const getSellers = async () => {
   try {
