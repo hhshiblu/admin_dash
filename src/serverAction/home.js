@@ -106,3 +106,15 @@ export const updateBannerRoles = async (bannerId) => {
     return { status: "error", message: error.message };
   }
 };
+
+export const hello = async () => {
+  try {
+    const db = await connectToDB();
+    const collection = db.collection("banars");
+    const banarsData = await collection.find().toArray();
+    const banars = JSON.parse(JSON.stringify(banarsData));
+    return banars ? banars : [];
+  } catch (error) {
+    return { status: "error", message: error.message };
+  }
+};
